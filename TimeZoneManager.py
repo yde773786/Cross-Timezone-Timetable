@@ -42,7 +42,7 @@ all_timezones = ["UTC−12:00",
 
 
 def shifted_time(current_tz: str, target_tz: str, current_time: datetime.time) -> Tuple[int, datetime.time]:
-    """
+    """Returns the time provided shifted to that of the target timezone
 
     :param current_tz: The current time zone of the schedule
     :param target_tz: The target time zone of the schedule
