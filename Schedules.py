@@ -71,6 +71,7 @@ class Schedules:
         possible_color = ColorManager.random_color()
         while possible_color in cls.used_colors:
             possible_color = ColorManager.random_color()
+        cls.used_colors.append(possible_color)
         return possible_color
 
     @classmethod
