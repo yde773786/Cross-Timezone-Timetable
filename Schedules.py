@@ -1,6 +1,6 @@
-from typing import Tuple
+from typing import Tuple, List
 import datetime
-from Managers import ColorManager
+from Managers import ColorManager, TimeZoneManager
 
 
 class ConflictingScheduleError(Exception):
@@ -33,6 +33,34 @@ class Schedules:
         self.start_time = start_time
         self.end_time = end_time
         self.color = color
+
+    def shift_schedules(self, current_tz: str, target_tz: str) -> List[object]:
+        """Return a list of schedules at the target timezone that are equivalent to the input
+         schedule in current timezone.
+
+        :param current_tz: current timezone
+        :param target_tz: target timezone
+        :return: list of shifted schedules
+        """
+        shifted = TimeZoneManager.shifted_time(current_tz, target_tz, self.start_time)
+        shifted_start_day = self.day + shifted[0]
+        shifted_start_time = shifted[1]
+        shifted = TimeZoneManager.shifted_time(current_tz, target_tz, self.end_time)
+        shifted_end_day = self.day + shifted[0]
+        shifted_end_time = shifted[1]
+
+        schedule_shift_list = []
+        current_start_time = shifted_start_time
+        if shifted_start_day < shifted_end_day:
+            current_day = shifted_start_day % 7
+            schedule_shift_list.append(Schedules(self.name, current_day, current_start_time,
+                                                 datetime.time(23, 59), True, self.color))
+            current_start_time = datetime.time(0, 0)
+
+        schedule_shift_list.append(Schedules(self.name, shifted_end_day % 7, current_start_time,
+                                             shifted_end_time, True, self.color))
+
+        return schedule_shift_list
 
     @classmethod
     def generate_color(cls) -> Tuple[int, int, int]:
