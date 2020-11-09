@@ -1,6 +1,7 @@
 import sys
 import os
 from typing import List
+import csv
 import Schedules
 
 home_path = os.getenv('HOME')
@@ -16,8 +17,8 @@ elif sys.platform == 'win32':
     home_path.replace('\\', '/')
     path_to_storage = home_path + '/AppData/Local/ctztt'
 
-if not os.path.exists(path_to_storage):
-    os.mkdir(path_to_storage)
+    file = 'ctztt.csv'
+    storage_csv = os.path.join(path_to_storage, file)
 
 
 def write_csv(timetable: List[Schedules]) -> None:
@@ -26,12 +27,39 @@ def write_csv(timetable: List[Schedules]) -> None:
     :param timetable: list of Schedules that need to be saved as new timetable
     :return:None
     """
+
+    with open(storage_csv, 'w') as csvfile:
+        header = ['Name', 'Day', 'Start Time', 'End Time', 'Color']
+        writer = csv.DictWriter(csvfile, fieldnames=header)
+
+        writer.writeheader()
+        for schedule in timetable:
+            writer.writerow({'Name': schedule.name, 'Day': schedule.day,
+                             'Start Time': schedule.start_time, 'End Time': schedule.end_time,
+                             'Color': schedule.color})
+
+
+if not os.path.exists(path_to_storage):
+    os.mkdir(path_to_storage)
+    write_csv([])
+
+
+def create_schedule(row: list) -> Schedules.Schedules:
+    """Create a schedule from a row in the ctztt.csv file
+
+    :param row: the row of the ctztt file
+    :return: The Schedule from the given row
+    """
     pass
 
 
-def read_csv() -> List[Schedules]:
+def read_csv() -> List[Schedules.Schedules]:
     """Read the timetable that is saved in ctztt.csv file to display saved timetable
 
     :return:None
     """
-    pass
+    with open(storage_csv) as csvfile:
+        reader = csv.reader(file)
+        headers = next(reader)
+
+        timetable = [create_schedule(row) for row in reader]
