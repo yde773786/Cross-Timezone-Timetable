@@ -3,6 +3,7 @@ import os
 from typing import List
 import csv
 import Schedules
+import datetime
 
 home_path = os.getenv('HOME')
 if home_path is None:
@@ -17,11 +18,11 @@ elif sys.platform == 'win32':
     home_path.replace('\\', '/')
     path_to_storage = home_path + '/AppData/Local/ctztt'
 
-    file = 'ctztt.csv'
-    storage_csv = os.path.join(path_to_storage, file)
+file = 'ctztt.csv'
+storage_csv = os.path.join(path_to_storage, file)
 
 
-def write_csv(timetable: List[Schedules]) -> None:
+def write_csv(timetable: List[Schedules.Schedules]) -> None:
     """Save the timetable into the ctztt.csv file for later usage.
 
     :param timetable: list of Schedules that need to be saved as new timetable
@@ -35,7 +36,8 @@ def write_csv(timetable: List[Schedules]) -> None:
         writer.writeheader()
         for schedule in timetable:
             writer.writerow({'Name': schedule.name, 'Day': schedule.day,
-                             'Start Time': schedule.start_time, 'End Time': schedule.end_time,
+                             'Start Time': schedule.start_time,
+                             'End Time': schedule.end_time,
                              'Color': schedule.color})
 
 
@@ -50,16 +52,30 @@ def create_schedule(row: list) -> Schedules.Schedules:
     :param row: the row of the ctztt file
     :return: The Schedule from the given row
     """
-    pass
+    return Schedules.Schedules(name=row[0], day=int(row[1]),
+                               start_time=str_to_time(row[2]),
+                               end_time=str_to_time(row[3]),
+                               is_shifted=False, color=row[4])
+
+
+def str_to_time(time_string: str) -> datetime.time:
+    """Converts string entries of time into datetime.time
+
+    :param time_string: string data
+    :return: datetime.time version of the string
+    """
+    hm = time_string.split(":")
+    return datetime.time(int(hm[0]), int(hm[1]))
 
 
 def read_csv() -> List[Schedules.Schedules]:
     """Read the timetable that is saved in ctztt.csv file to display saved timetable
 
-    :return:None
+    :return:List of schedules from 'ctztt.csv'
     """
-    with open(storage_csv) as csvfile:
-        reader = csv.reader(file)
-        headers = next(reader)
+    with open(storage_csv) as csv_reader:
+        reader = csv.reader(csv_reader)
+        next(reader)
 
         timetable = [create_schedule(row) for row in reader]
+        return timetable
