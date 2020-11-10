@@ -1,6 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
 from UI.home_screen import Ui_MainWindow
+from UI.timetable_screen_func import TimeWindow
 from UI.load_error import Ui_Dialog
 from Managers.StorageManager import read_csv
 from Managers.TimeZoneManager import all_timezones
@@ -10,6 +11,9 @@ def open_dialog():
     if not read_csv():
         warn_dialog = WarnDialog()
         warn_dialog.exec_()
+    else:
+        gui_home.hide()
+        gui_time.show()
 
 
 class Window(QMainWindow, Ui_MainWindow):
@@ -32,6 +36,7 @@ class WarnDialog(QDialog, Ui_Dialog):
 
 
 app = QApplication(sys.argv)
-Gui = Window()
-Gui.show()
+gui_home = Window()
+gui_time = TimeWindow()
+gui_home.show()
 sys.exit(app.exec_())
