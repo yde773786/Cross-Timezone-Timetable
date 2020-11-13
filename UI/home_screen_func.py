@@ -7,12 +7,20 @@ from Managers.StorageManager import read_csv
 from Managers.TimeZoneManager import all_timezones
 
 
-def open_dialog():
-    if not read_csv():
+def open_dialog() -> None:
+    """Pass csv data to timetable window, or give warning dialog if no
+     such data exists
+
+    :return: None
+    """
+    read_timetable = read_csv()
+    if not read_timetable:
         warn_dialog = WarnDialog()
         warn_dialog.exec_()
     else:
+        gui_time.update_from_csv(read_timetable)
         gui_home.hide()
+        gui_time.setFixedSize(gui_time.size())
         gui_time.show()
 
 
