@@ -19,12 +19,13 @@ class TimeWindow(QMainWindow, Ui_MainWindow):
     def map_timetable(self):
         for x in range(24):
             for y in range(7):
-                empty_label = QLabel(str(x) + str(y))
+                empty_label = QLabel('')
                 empty_label.setAlignment(QtCore.Qt.AlignCenter)
                 empty_label.setStyleSheet("border: 1px solid black;")
                 self.timetable_sandbox.addWidget(empty_label, x, y)
 
         # dimension analyzer (Remove in future commits)
-        btn = QPushButton('quit', self)
-        btn.resize(802/8, 625/24)
-        btn.move(0, 23)
+        # btn = QLabel('MAT137', self)
+        # btn.setStyleSheet("background-color: lightgreen")
+        # btn.resize(802/8, (625/25)*2.75)
+        # btn.move((802/8)*6, 23 + (625/25) * 6)

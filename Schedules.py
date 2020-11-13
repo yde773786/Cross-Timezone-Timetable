@@ -1,6 +1,6 @@
 from typing import Tuple, List
 import datetime
-from Managers import ColorManager, TimeZoneManager
+from Managers import TimeZoneManager
 
 
 class ConflictingScheduleError(Exception):
@@ -61,18 +61,6 @@ class Schedules:
                                              shifted_end_time, True, self.color))
 
         return schedule_shift_list
-
-    @classmethod
-    def generate_color(cls) -> Tuple[int, int, int]:
-        """Generate a color for the schedule
-
-        :return: color used to represent schedule
-        """
-        possible_color = ColorManager.random_color()
-        while possible_color in cls.used_colors:
-            possible_color = ColorManager.random_color()
-        cls.used_colors.append(possible_color)
-        return possible_color
 
     @classmethod
     def schedule_conflict(cls, day: int, start_time: datetime.time, end_time: datetime.time) -> bool:
