@@ -26,5 +26,5 @@ class TimeWindow(QMainWindow, Ui_MainWindow):
 
         # dimension analyzer (Remove in future commits)
         btn = QPushButton('quit', self)
-        btn.resize(802, 625)
+        btn.resize(802/8, 625/24)
         btn.move(0, 23)
