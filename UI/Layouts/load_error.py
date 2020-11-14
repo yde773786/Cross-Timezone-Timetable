@@ -9,7 +9,7 @@ class Ui_Dialog(object):
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.label = QtWidgets.QLabel(Dialog)
         self.label.setText("")
-        self.label.setPixmap(QtGui.QPixmap("Image assets/warning.png"))
+        self.label.setPixmap(QtGui.QPixmap("../Image assets/warning.png"))
         self.label.setObjectName("label")
         self.horizontalLayout.addWidget(self.label)
         self.label_2 = QtWidgets.QLabel(Dialog)

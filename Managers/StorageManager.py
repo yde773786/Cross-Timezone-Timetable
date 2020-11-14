@@ -2,7 +2,7 @@ import sys
 import os
 from typing import List
 import csv
-import Schedules
+from Schedules import Schedules
 import datetime
 
 home_path = os.getenv('HOME')
@@ -22,7 +22,7 @@ file = 'ctztt.csv'
 storage_csv = os.path.join(path_to_storage, file)
 
 
-def write_csv(timetable: List[Schedules.Schedules]) -> None:
+def write_csv(timetable: List[Schedules]) -> None:
     """Save the timetable into the ctztt.csv file for later usage.
 
     :param timetable: list of Schedules that need to be saved as new timetable
@@ -46,16 +46,16 @@ if not os.path.exists(path_to_storage):
     write_csv([])
 
 
-def create_schedule(row: list) -> Schedules.Schedules:
+def create_schedule(row: list) -> Schedules:
     """Create a schedule from a row in the ctztt.csv file
 
     :param row: the row of the ctztt file
     :return: The Schedule from the given row
     """
-    return Schedules.Schedules(name=row[0], day=int(row[1]),
-                               start_time=str_to_time(row[2]),
-                               end_time=str_to_time(row[3]),
-                               is_shifted=False, color=row[4])
+    return Schedules(name=row[0], day=int(row[1]),
+                     start_time=str_to_time(row[2]),
+                     end_time=str_to_time(row[3]),
+                     is_shifted=False, color=row[4])
 
 
 def str_to_time(time_string: str) -> datetime.time:
@@ -68,7 +68,7 @@ def str_to_time(time_string: str) -> datetime.time:
     return datetime.time(int(hm[0]), int(hm[1]))
 
 
-def read_csv() -> List[Schedules.Schedules]:
+def read_csv() -> List[Schedules]:
     """Read the timetable that is saved in ctztt.csv file to display saved timetable
 
     :return:List of schedules from 'ctztt.csv'
@@ -78,4 +78,5 @@ def read_csv() -> List[Schedules.Schedules]:
         next(reader)
 
         timetable = [create_schedule(row) for row in reader]
+        Schedules.clear_used()
         return timetable

@@ -1,13 +1,13 @@
 from typing import Tuple
 
-all_colors = {'A': (0, 0, 0),
-              'B': (0, 0, 0),
-              'C': (0, 0, 0),
-              'D': (0, 0, 0),
-              'E': (0, 0, 0),
-              'F': (0, 0, 0),
-              'G': (0, 0, 0),
-              'H': (0, 0, 0)}
+all_colors = {'blue': (173, 216, 230),
+              'green': (144, 238, 144),
+              'grey': (211, 211, 211),
+              'pink': (255, 182, 193),
+              'yellow': (255, 255, 0),
+              'orange': (255, 207, 158),
+              'red': (202, 52, 51),
+              'violet': (177, 156, 217)}
 
 
 def generate_rgb(str_color: str) -> Tuple[int, int, int]:

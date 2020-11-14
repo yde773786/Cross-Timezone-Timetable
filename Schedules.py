@@ -13,7 +13,6 @@ class ConflictingScheduleError(Exception):
 
 class Schedules:
     used_slot = []
-    used_colors = []
 
     def __init__(self, name: str, day: int, start_time: datetime.time,
                  end_time: datetime.time, is_shifted: bool, color: Tuple[int, int, int]):
@@ -82,3 +81,7 @@ class Schedules:
 
             cls.used_slot.append((day, start_time, end_time))
             return False
+
+    @classmethod
+    def clear_used(cls):
+        cls.used_slot = []
