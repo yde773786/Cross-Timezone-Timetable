@@ -1,19 +1,40 @@
+import sys
+
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QMainWindow, QLabel
 from PyQt5 import QtCore
+import UI.Functionalities.navigation as nav
 from UI.Layouts.timetable_screen import Ui_MainWindow
 from Schedules import Schedules
 
 
+def close_application():
+    sys.exit()
+
+
 class TimeWindow(QMainWindow, Ui_MainWindow):
 
-    def __init__(self, timetable, current_tz, target_tz):
+    def __init__(self, timetable, current_tz, target_tz, is_editable):
         super().__init__()
         self.setupUi(self)
         self.read_timetable = timetable
         self.current_tz = current_tz
         self.target_tz = target_tz
         self.map_timetable()
+
+        if not is_editable:
+            self.menuhi.setTitle('')
+            self.menuSave.setTitle('Navigate')
+            self.actionDelete_Schedule.setVisible(False)
+            self.actionAdd_Schedule.setVisible(False)
+            self.actionSave_and_Exit.setText('Exit')
+            self.actionSave_and_Return.setText('Return')
+
+            self.actionSave_and_Exit.setShortcut('Ctrl+W')
+            self.actionSave_and_Exit.triggered.connect(close_application)
+
+            self.actionSave_and_Return.setShortcut('Ctrl+B')
+            self.actionSave_and_Return.triggered.connect(self.home_application)
 
     def map_timetable(self) -> None:
         """Plots the Schedules appropriately on the TimeWindow
@@ -53,4 +74,12 @@ class TimeWindow(QMainWindow, Ui_MainWindow):
 
         start_loc = (schedule.start_time.hour * 60 + schedule.start_time.minute) / 60
         graphed_schedule.move((802 / 8) * (schedule.day + 1), 48 + (625 / 25) * start_loc)
+
+    def home_application(self):
+        """Navigate to home
+
+        :return: None
+        """
+        nav.navigator.rotate(self, nav.navigator.temporary_win)
+
 
