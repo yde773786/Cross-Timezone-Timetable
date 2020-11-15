@@ -7,7 +7,8 @@ all_colors = {'blue': (173, 216, 230),
               'yellow': (255, 255, 0),
               'orange': (255, 207, 158),
               'red': (202, 52, 51),
-              'violet': (177, 156, 217)}
+              'violet': (177, 156, 217),
+              'gold': (212, 175, 55)}
 
 
 def generate_rgb(str_color: str) -> Tuple[int, int, int]:
