@@ -1,4 +1,5 @@
 import sys
+from typing import List
 from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
 from UI.Layouts.home_screen import Ui_MainWindow
 import UI.Functionalities.navigation as nav
@@ -7,6 +8,16 @@ from UI.Layouts.load_error import Ui_Dialog
 from Schedules import Schedules
 from Managers.StorageManager import read_csv
 from Managers.TimeZoneManager import all_timezones
+
+
+def clear_and_read() -> List[object]:
+    """Every time a click event for either converting or creating is registered,
+        The previous list of schedules need to be removed and new ones to be read.
+
+    :return: list of new scheduled
+    """
+    Schedules.clear_used()
+    return read_csv()
 
 
 class Window(QMainWindow, Ui_MainWindow):
@@ -20,16 +31,16 @@ class Window(QMainWindow, Ui_MainWindow):
         self.current_tz_drop_down.addItems(all_timezones)
         self.target_tz_drop_down.addItems(all_timezones)
 
-        self.convert.clicked.connect(self.open_next)
+        self.convert.clicked.connect(self.open_next_ro)
+        self.create.clicked.connect(self.open_next_w)
 
-    def open_next(self) -> None:
-        """Open timetable window, or give warning dialog if no
+    def open_next_ro(self) -> None:
+        """Open timetable window (read-only), or give warning dialog if no
          csv data exists
 
         :return: None
         """
-        Schedules.clear_used()
-        read_timetable = read_csv()
+        read_timetable = clear_and_read()
 
         current_tz = str(self.current_tz_drop_down.currentText())
         target_tz = str(self.target_tz_drop_down.currentText())
@@ -41,6 +52,17 @@ class Window(QMainWindow, Ui_MainWindow):
         else:
             self.gui_time.setFixedSize(self.gui_time.size())
             nav.navigator.rotate(self, self.gui_time)
+
+    def open_next_w(self) -> None:
+        """Open timetable window (write)
+
+        :return: None
+        """
+        read_timetable = clear_and_read()
+
+        self.gui_time = TimeWindow(read_timetable, None, None, True)
+        self.gui_time.setFixedSize(self.gui_time.size())
+        nav.navigator.rotate(self, self.gui_time)
 
 
 class WarnDialog(QDialog, Ui_Dialog):

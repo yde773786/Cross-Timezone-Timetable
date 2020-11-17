@@ -18,11 +18,10 @@ class TimeWindow(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.read_timetable = timetable
-        self.current_tz = current_tz
-        self.target_tz = target_tz
-        self.map_timetable()
 
         if not is_editable:
+            self.current_tz = current_tz
+            self.target_tz = target_tz
             self.menuhi.setTitle('')
             self.menuSave.setTitle('Navigate')
             self.actionDelete_Schedule.setVisible(False)
@@ -36,8 +35,19 @@ class TimeWindow(QMainWindow, Ui_MainWindow):
             self.actionSave_and_Return.setShortcut('Ctrl+B')
             self.actionSave_and_Return.triggered.connect(self.home_application)
 
-    def map_timetable(self) -> None:
-        """Plots the Schedules appropriately on the TimeWindow
+            shifted_timetable = []
+            for schedule in self.read_timetable:
+                shifted_timetable += schedule.shift_schedules(self.current_tz, self.target_tz)
+
+            self.read_timetable = shifted_timetable
+            self.map_timetable()
+
+        else:
+            self.empty_layout()
+            self.actionAdd_Schedule.triggered.connect(self.map_timetable)
+
+    def empty_layout(self) -> None:
+        """Create an empty timetable window
 
         :return: None
         """
@@ -48,12 +58,16 @@ class TimeWindow(QMainWindow, Ui_MainWindow):
                 empty_label.setStyleSheet("border: 1px solid black;")
                 self.timetable_sandbox.addWidget(empty_label, x, y)
 
-        shifted_timetable = []
-        for schedule in self.read_timetable:
-            shifted_timetable += schedule.shift_schedules(self.current_tz, self.target_tz)
+    def map_timetable(self) -> None:
+        """Plots the Schedules appropriately on the TimeWindow
 
-        for schedule in shifted_timetable:
-            self.map_schedule(schedule)
+        :return: None
+        """
+        self.empty_layout()
+
+        if self.read_timetable is not None:
+            for schedule in self.read_timetable:
+                self.map_schedule(schedule)
 
     def map_schedule(self, schedule: Schedules) -> None:
         """Takes in a specific schedule and places it on the TimeWindow
@@ -74,6 +88,7 @@ class TimeWindow(QMainWindow, Ui_MainWindow):
 
         start_loc = (schedule.start_time.hour * 60 + schedule.start_time.minute) / 60
         graphed_schedule.move((802 / 8) * (schedule.day + 1), 48 + (625 / 25) * start_loc)
+        graphed_schedule.show()
 
     def home_application(self):
         """Navigate to home

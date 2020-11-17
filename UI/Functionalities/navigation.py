@@ -13,7 +13,7 @@ class navigator:
         :return: None
         """
         cls.temporary_win = current_win
-        current_win.hide()
+        current_win.close()
         destination_win.show()
 
 
