@@ -26,6 +26,7 @@ class TimeWindow(QMainWindow, Ui_MainWindow):
             self.menuSave.setTitle('Navigate')
             self.actionDelete_Schedule.setVisible(False)
             self.actionAdd_Schedule.setVisible(False)
+            self.actionLoad_Schedule.setVisible(False)
             self.actionSave_and_Exit.setText('Exit')
             self.actionSave_and_Return.setText('Return')
 
@@ -44,7 +45,7 @@ class TimeWindow(QMainWindow, Ui_MainWindow):
 
         else:
             self.empty_layout()
-            self.actionAdd_Schedule.triggered.connect(self.map_timetable)
+            self.actionLoad_Schedule.triggered.connect(self.map_timetable)
 
     def empty_layout(self) -> None:
         """Create an empty timetable window
