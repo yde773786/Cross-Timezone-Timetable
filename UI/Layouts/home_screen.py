@@ -1,3 +1,5 @@
+"""Designer ui file compiled into python code for home screen"""
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
