@@ -2,8 +2,8 @@ import sys
 from typing import List
 from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
 from UI.Layouts.home_screen import Ui_MainWindow
-import UI.Functionalities.navigation as nav
-from UI.Functionalities.timetable_screen_func import TimeWindow
+import UI.Functionalities.bridge as nav
+from UI.Functionalities.timetable_screen_func import ReadOnlyTimeWindow, EditableTimeWindow
 from UI.Layouts.load_error import Ui_Dialog
 from Schedules import Schedules
 from Managers.StorageManager import read_csv
@@ -44,10 +44,10 @@ class Window(QMainWindow, Ui_MainWindow):
 
         current_tz = str(self.current_tz_drop_down.currentText())
         target_tz = str(self.target_tz_drop_down.currentText())
-        self.gui_time = TimeWindow(read_timetable, current_tz, target_tz, False)
+        self.gui_time = ReadOnlyTimeWindow(read_timetable, current_tz, target_tz)
 
         if not read_timetable:
-            warn_dialog = WarnDialog()
+            warn_dialog = nav.WarnDialog()
             warn_dialog.exec_()
         else:
             self.gui_time.setFixedSize(self.gui_time.size())
@@ -60,16 +60,9 @@ class Window(QMainWindow, Ui_MainWindow):
         """
         read_timetable = clear_and_read()
 
-        self.gui_time = TimeWindow(read_timetable, None, None, True)
+        self.gui_time = EditableTimeWindow(read_timetable)
         self.gui_time.setFixedSize(self.gui_time.size())
         nav.navigator.rotate(self, self.gui_time)
-
-
-class WarnDialog(QDialog, Ui_Dialog):
-
-    def __init__(self):
-        super().__init__()
-        self.setupUi(self)
 
 
 app = QApplication(sys.argv)
