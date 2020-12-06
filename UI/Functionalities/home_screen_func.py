@@ -1,10 +1,9 @@
 import sys
 from typing import List
-from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog
+from PyQt5.QtWidgets import QApplication, QMainWindow
 from UI.Layouts.home_screen import Ui_MainWindow
 import UI.Functionalities.bridge as nav
 from UI.Functionalities.timetable_screen_func import ReadOnlyTimeWindow, EditableTimeWindow
-from UI.Layouts.load_error import Ui_Dialog
 from Schedules import Schedules
 from Managers.StorageManager import read_csv
 from Managers.TimeZoneManager import all_timezones
