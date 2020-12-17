@@ -2,7 +2,7 @@ from typing import Tuple
 
 all_colors = {'blue': (173, 216, 230),
               'green': (144, 238, 144),
-              'grey': (211, 211, 211),
+              'brown': (195, 155, 119),
               'pink': (255, 182, 193),
               'yellow': (255, 255, 0),
               'orange': (255, 207, 158),

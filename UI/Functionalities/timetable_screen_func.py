@@ -1,15 +1,23 @@
 import sys
 
 from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import QMainWindow, QLabel, QAction, QMenu
+from PyQt5.QtWidgets import QMainWindow, QLabel, QAction, QMenu, QDialog
 from PyQt5 import QtCore
 import UI.Functionalities.bridge as nav
 from UI.Layouts.timetable_screen import Ui_MainWindow
+from UI.Layouts.add_timetable_dialog import Ui_Dialog
 from Schedules import Schedules
 
 
 def close_application():
     sys.exit()
+
+
+class AddSchedule(QDialog, Ui_Dialog):
+
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
 
 
 class TimeWindow(QMainWindow, Ui_MainWindow):
@@ -139,7 +147,8 @@ class EditableTimeWindow(TimeWindow):
             super(EditableTimeWindow, self).map_timetable()
 
     def add_schedule(self):
-        pass
+        add_schedule = AddSchedule()
+        add_schedule.exec_()
 
     def remove_schedule(self):
         pass
