@@ -13,9 +13,11 @@ class ConflictingScheduleError(Exception):
 
 class Schedules:
     used_slot = []
+    used_colors = []
 
     def __init__(self, name: str, day: int, start_time: datetime.time,
-                 end_time: datetime.time, is_shifted: bool, color: Tuple[int, int, int]):
+                 end_time: datetime.time, is_shifted: bool,
+                 color=None):
         """Construct a new Schedule
 
         :param name: Name of new schedule
@@ -27,11 +29,16 @@ class Schedules:
         """
         if Schedules.schedule_conflict(day, start_time, end_time) and not is_shifted:
             raise ConflictingScheduleError
+
         self.name = name
         self.day = day
         self.start_time = start_time
         self.end_time = end_time
-        self.color = color
+
+        if color is not None:
+            self.color = color
+        else:
+            self.color = Schedules.get_next_color()
 
     def shift_schedules(self, current_tz: str, target_tz: str) -> List[object]:
         """Return a list of schedules at the target timezone that are equivalent to the input
@@ -84,4 +91,17 @@ class Schedules:
 
     @classmethod
     def clear_used(cls):
+        """Clears all the used_slots to avoid ConflictingScheduleError
+        when resetting
+
+        :return: None
+        """
         cls.used_slot = []
+
+    @classmethod
+    def get_next_color(cls) -> Tuple[int, int, int]:
+        """Provides new color for schedule by using a circular queue
+
+        :return: color for new schedule
+        """
+        pass

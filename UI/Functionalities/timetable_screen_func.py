@@ -15,7 +15,7 @@ def close_application():
 
 class AddSchedule(QDialog, Ui_Dialog):
 
-    def __init__(self):
+    def __init__(self, timetable: Schedules):
         super().__init__()
         self.setupUi(self)
 
@@ -147,7 +147,7 @@ class EditableTimeWindow(TimeWindow):
             super(EditableTimeWindow, self).map_timetable()
 
     def add_schedule(self):
-        add_schedule = AddSchedule()
+        add_schedule = AddSchedule(self.read_timetable)
         add_schedule.exec_()
 
     def remove_schedule(self):

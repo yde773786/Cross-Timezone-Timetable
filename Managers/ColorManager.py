@@ -1,6 +1,6 @@
 from typing import Tuple
 
-all_colors = {'blue': (173, 216, 230),
+ALL_COLORS = {'blue': (173, 216, 230),
               'green': (144, 238, 144),
               'brown': (195, 155, 119),
               'pink': (255, 182, 193),
@@ -16,4 +16,4 @@ def generate_rgb(str_color: str) -> Tuple[int, int, int]:
 
     :return: Tuple representing rgb of schedule's color
     """
-    return all_colors[str_color]
+    return ALL_COLORS[str_color]

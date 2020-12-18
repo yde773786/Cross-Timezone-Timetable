@@ -1,7 +1,7 @@
 import datetime
 from typing import Tuple
 
-all_timezones = ["UTC-12:00",
+ALL_TIMEZONES = ["UTC-12:00",
                  "UTC-11:00",
                  "UTC-10:00",
                  "UTC-09:30",
@@ -39,6 +39,9 @@ all_timezones = ["UTC-12:00",
                  "UTC+12:45",
                  "UTC+13:00",
                  "UTC+14:00", ]
+
+ALL_DAYS = {'Monday': 0, 'Tuesday': 1, 'Wednesday': 2, 'Thursday': 3,
+            'Friday': 4, 'Saturday': 5, 'Sunday': 6}
 
 
 def shifted_time(current_tz: str, target_tz: str, current_time: datetime.time) -> Tuple[int, datetime.time]:

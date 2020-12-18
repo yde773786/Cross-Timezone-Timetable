@@ -6,14 +6,14 @@ import UI.Functionalities.bridge as nav
 from UI.Functionalities.timetable_screen_func import ReadOnlyTimeWindow, EditableTimeWindow
 from Schedules import Schedules
 from Managers.StorageManager import read_csv
-from Managers.TimeZoneManager import all_timezones
+from Managers.TimeZoneManager import ALL_TIMEZONES
 
 
 def clear_and_read() -> List[object]:
     """Every time a click event for either converting or creating is registered,
         The previous list of schedules need to be removed and new ones to be read.
 
-    :return: list of new scheduled
+    :return: list of new schedules
     """
     Schedules.clear_used()
     return read_csv()
@@ -27,8 +27,8 @@ class Window(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.gui_time = None
 
-        self.current_tz_drop_down.addItems(all_timezones)
-        self.target_tz_drop_down.addItems(all_timezones)
+        self.current_tz_drop_down.addItems(ALL_TIMEZONES)
+        self.target_tz_drop_down.addItems(ALL_TIMEZONES)
 
         self.convert.clicked.connect(self.open_next_ro)
         self.create.clicked.connect(self.open_next_w)

@@ -3,6 +3,7 @@ import os
 from typing import List
 import csv
 from Schedules import Schedules
+from Managers.ColorManager import generate_rgb
 import datetime
 
 home_path = os.getenv('HOME')
@@ -55,7 +56,7 @@ def create_schedule(row: list) -> Schedules:
     return Schedules(name=row[0], day=int(row[1]),
                      start_time=str_to_time(row[2]),
                      end_time=str_to_time(row[3]),
-                     is_shifted=False, color=row[4])
+                     is_shifted=False, color=generate_rgb(row[4]))
 
 
 def str_to_time(time_string: str) -> datetime.time:
