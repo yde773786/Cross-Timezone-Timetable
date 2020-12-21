@@ -39,9 +39,24 @@ class AddSchedule(QDialog, Ui_Dialog):
             end_time = datetime.time(int(self.end_hour.text()),
                                        int(self.end_min.text()))
 
-            insert = Schedules(self.name_schedule.text(),
-                               ALL_DAYS[self.day_week.currentText()],
-                               start_time, end_time, False)
+            name = self.name_schedule.text()
+            has_same_name = False
+            color = ()
+
+            for schedule in self.timetable:
+                if schedule.name == name:
+                    color = schedule.color
+                    has_same_name = True
+                    break
+
+            if has_same_name:
+                insert = Schedules(name,
+                                   ALL_DAYS[self.day_week.currentText()],
+                                   start_time, end_time, False, color)
+            else:
+                insert = Schedules(name,
+                                   ALL_DAYS[self.day_week.currentText()],
+                                   start_time, end_time, False)
 
             self.timetable.append(insert)
             self.close()
