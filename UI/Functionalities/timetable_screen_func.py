@@ -1,12 +1,15 @@
 import sys
+from typing import List
 
-from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import QMainWindow, QLabel, QAction, QMenu, QDialog
+from PyQt5.QtGui import QFont, QIntValidator
+from PyQt5.QtWidgets import QMainWindow, QLabel, QAction, QMenu, QDialog, QWidget
 from PyQt5 import QtCore
+import datetime
 import UI.Functionalities.bridge as nav
 from UI.Layouts.timetable_screen import Ui_MainWindow
-from UI.Layouts.add_timetable_dialog import Ui_Dialog
-from Schedules import Schedules
+from UI.Layouts.add_schedule_dialog import Ui_Dialog
+from Managers.TimeZoneManager import ALL_DAYS
+from Schedules import Schedules, ConflictingScheduleError, EndBeforeStartError
 
 
 def close_application():
@@ -15,9 +18,51 @@ def close_application():
 
 class AddSchedule(QDialog, Ui_Dialog):
 
-    def __init__(self, timetable: Schedules):
+    def __init__(self, timetable: List[Schedules]):
         super().__init__()
         self.setupUi(self)
+        self.int_input = QIntValidator()
+
+        self.day_week.addItems(ALL_DAYS)
+        self.start_hour.setValidator(self.int_input)
+        self.start_min.setValidator(self.int_input)
+        self.end_hour.setValidator(self.int_input)
+        self.end_min.setValidator(self.int_input)
+        self.timetable = timetable
+        self.buttonBox.accepted.connect(self.add_new)
+
+    def add_new(self):
+        try:
+            start_time = datetime.time(int(self.start_hour.text()),
+                                       int(self.start_min.text()))
+
+            end_time = datetime.time(int(self.end_hour.text()),
+                                       int(self.end_min.text()))
+
+            insert = Schedules(self.name_schedule.text(),
+                               ALL_DAYS[self.day_week.currentText()],
+                               start_time, end_time, False)
+
+            self.timetable.append(insert)
+            self.close()
+
+        except ValueError:
+            self.error_dialog.setText('ERROR: Input is not a valid time as per '
+                                      'a 24h schedule.')
+        except ConflictingScheduleError:
+            self.error_dialog.setText('ERROR: Input has scheduling conflicts with '
+                                      'existing timetable.')
+        except EndBeforeStartError:
+            self.error_dialog.setText('ERROR: The end time cannot be before the start time.')
+
+
+def create_menu_button(menu_button_msg: str, menu_bar: QWidget) -> QMenu:
+    """Adds a menu button of the name given by menu_button_msg that will be
+    displayed on the menu
+
+    :return: new QMenu
+    """
+    return menu_bar.addMenu('&' + menu_button_msg)
 
 
 class TimeWindow(QMainWindow, Ui_MainWindow):
@@ -27,8 +72,9 @@ class TimeWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.read_timetable = timetable
 
-        navigate = self.create_menu_button('Navigate')
-        navigate.addAction(self.create_menu_functionality('Go Back', 'Ctrl+B', self.home_application))
+        navigate = create_menu_button('Navigate', self.menubar)
+        navigate.addAction(self.create_menu_functionality('Go Back', 'Ctrl+B',
+                                                          self.home_application))
 
     def empty_layout(self) -> None:
         """Create an empty timetable window
@@ -73,13 +119,6 @@ class TimeWindow(QMainWindow, Ui_MainWindow):
         start_loc = (schedule.start_time.hour * 60 + schedule.start_time.minute) / 60
         graphed_schedule.move((802 / 8) * (schedule.day + 1), 48 + (625 / 25) * start_loc)
         graphed_schedule.show()
-
-    def create_menu_button(self, menu_button_msg: str) -> QMenu:
-        """Adds a menu button of the name given by menu_button_msg that will be displayed on the menu
-
-        :return: new QMenu
-        """
-        return self.menubar.addMenu('&' + menu_button_msg)
 
     def create_menu_functionality(self, action_msg: str, short_cut: str, function_connect) -> QAction:
         """Assigns a function to a new QAction with a name provided by action_msg and corresponding shortcut
@@ -127,8 +166,9 @@ class EditableTimeWindow(TimeWindow):
     def __init__(self, timetable):
         super(EditableTimeWindow, self).__init__(timetable)
 
-        edit = self.create_menu_button('Edit Timetable')
-        edit.addAction(self.create_menu_functionality('Add Schedule', 'Ctrl+A', self.add_schedule))
+        edit = create_menu_button('Edit Timetable', self.menubar)
+
+        edit.addAction(self.create_menu_functionality('Add Schedule', 'Ctrl+A', self.add_new_schedule))
         edit.addAction(self.create_menu_functionality('Delete Schedule', 'Ctrl+D', self.remove_schedule))
         edit.addAction(self.create_menu_functionality('Edit saved timetable', 'Ctrl+L', self.map_timetable))
 
@@ -146,9 +186,13 @@ class EditableTimeWindow(TimeWindow):
         else:
             super(EditableTimeWindow, self).map_timetable()
 
-    def add_schedule(self):
+    def add_new_schedule(self):
         add_schedule = AddSchedule(self.read_timetable)
         add_schedule.exec_()
+        self.map_timetable()
+
+    def add_schedule_existing(self):
+        pass
 
     def remove_schedule(self):
         pass

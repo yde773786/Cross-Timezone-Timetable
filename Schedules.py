@@ -1,19 +1,27 @@
 from typing import Tuple, List
 import datetime
-from Managers import TimeZoneManager
+from Managers.TimeZoneManager import shifted_time
+from Managers.ColorManager import ALL_COLORS
 
 
 class ConflictingScheduleError(Exception):
     """
-    If this error is thrown, either the schedule entered is invalid or it coincides with
+    If this error is thrown, the schedule coincides with
     a previously entered schedule.
+    """
+    pass
+
+
+class EndBeforeStartError(Exception):
+    """
+    If this error is thrown, the end time is before the start time.
     """
     pass
 
 
 class Schedules:
     used_slot = []
-    used_colors = []
+    color_queue = list(ALL_COLORS.values())
 
     def __init__(self, name: str, day: int, start_time: datetime.time,
                  end_time: datetime.time, is_shifted: bool,
@@ -27,8 +35,12 @@ class Schedules:
         :param is_shifted: Checks if the schedule has been shifted.
         If so, there is no need to check for Conflicting Schedules.
         """
-        if Schedules.schedule_conflict(day, start_time, end_time) and not is_shifted:
-            raise ConflictingScheduleError
+
+        if not is_shifted:
+            if Schedules.schedule_conflict(day, start_time, end_time):
+                raise ConflictingScheduleError
+            elif end_time < start_time:
+                raise EndBeforeStartError
 
         self.name = name
         self.day = day
@@ -48,10 +60,10 @@ class Schedules:
         :param target_tz: target timezone
         :return: list of shifted schedules
         """
-        shifted = TimeZoneManager.shifted_time(current_tz, target_tz, self.start_time)
+        shifted = shifted_time(current_tz, target_tz, self.start_time)
         shifted_start_day = self.day + shifted[0]
         shifted_start_time = shifted[1]
-        shifted = TimeZoneManager.shifted_time(current_tz, target_tz, self.end_time)
+        shifted = shifted_time(current_tz, target_tz, self.end_time)
         shifted_end_day = self.day + shifted[0]
         shifted_end_time = shifted[1]
 
@@ -71,23 +83,20 @@ class Schedules:
     @classmethod
     def schedule_conflict(cls, day: int, start_time: datetime.time, end_time: datetime.time) -> bool:
         """Checks if there is a conflict with a previously entered Schedule
-        or if the end time if before start time
 
         :param day: representing day of schedule
         :param start_time: representing start time of schedule
         :param end_time: end time of schedule
         :return: if schedule conflicts or not
         """
-        if start_time >= end_time:
-            return True
-        else:
-            for schedule in cls.used_slot:
-                conflict_time = not (end_time <= schedule[1] or start_time >= schedule[2])
-                if day == schedule[0] and conflict_time:
-                    return True
 
-            cls.used_slot.append((day, start_time, end_time))
-            return False
+        for schedule in cls.used_slot:
+            conflict_time = not (end_time <= schedule[1] or start_time >= schedule[2])
+            if day == schedule[0] and conflict_time:
+                return True
+
+        cls.used_slot.append((day, start_time, end_time))
+        return False
 
     @classmethod
     def clear_used(cls):
@@ -104,4 +113,7 @@ class Schedules:
 
         :return: color for new schedule
         """
-        pass
+        schedule_color = cls.color_queue.pop(0)
+        cls.color_queue.append(schedule_color)
+
+        return schedule_color
