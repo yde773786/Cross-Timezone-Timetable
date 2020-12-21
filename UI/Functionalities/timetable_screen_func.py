@@ -30,6 +30,7 @@ class AddSchedule(QDialog, Ui_Dialog):
         self.end_min.setValidator(self.int_input)
         self.timetable = timetable
         self.buttonBox.accepted.connect(self.add_new)
+        self.error_dialog.setStyleSheet('QLabel {color: #FF0000;}')
 
     def add_new(self):
         try:
