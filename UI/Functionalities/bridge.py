@@ -1,6 +1,7 @@
 import sys
 
-from PyQt5.QtWidgets import QDialog
+from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout
 
 from UI.Layouts.load_error import Ui_Dialog
 
@@ -8,6 +9,14 @@ from UI.Layouts.load_error import Ui_Dialog
 bridge.py is a script that contains all functionalities that are common to the home window and the time windows.
 This includes the navigator class to go back and forth windows, and the common Load error warning dialog.
 """
+
+LOAD_WARNING = "There is no timetable that you have stored.\n " \
+             "Please create one instead"
+
+DELETE_WARNING = "There are no schedules to be deleted from timetable"
+
+DATA_LOSS_WARNING = "The data on timetable being edited currently will be \n " \
+                    "lost. Do you wish to continue?"
 
 
 class navigator:
@@ -39,6 +48,10 @@ def start_application(application_starter: object, start_win: object) -> None:
 
 class WarnDialog(QDialog, Ui_Dialog):
 
-    def __init__(self):
+    def __init__(self, message: str, add_choice_buttons=False):
         super().__init__()
         self.setupUi(self)
+        self.label_2.setText(message)
+
+        if not add_choice_buttons:
+            self.buttonBox.close()

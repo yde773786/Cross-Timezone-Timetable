@@ -217,14 +217,14 @@ class ReadOnlyTimeWindow(TimeWindow):
 
 class EditableTimeWindow(TimeWindow):
 
-    def __init__(self, timetable):
-        super(EditableTimeWindow, self).__init__(timetable)
+    def __init__(self):
+        super(EditableTimeWindow, self).__init__([])
 
         edit = create_menu_button('Edit Timetable', self.menubar)
 
         edit.addAction(self.create_menu_functionality('Add Schedule', 'Ctrl+A', self.add_new_schedule))
         edit.addAction(self.create_menu_functionality('Delete Schedule', 'Ctrl+D', self.remove_schedule))
-        edit.addAction(self.create_menu_functionality('Edit saved timetable', 'Ctrl+L', self.map_timetable))
+        edit.addAction(self.create_menu_functionality('Edit saved timetable', 'Ctrl+L', self.load_timetable))
 
         self.empty_layout()
 
@@ -235,7 +235,7 @@ class EditableTimeWindow(TimeWindow):
 
     def remove_schedule(self):
         if not self.read_timetable:
-            warn_dialog = nav.WarnDialog()
+            warn_dialog = nav.WarnDialog(nav.DELETE_WARNING)
             warn_dialog.exec_()
         else:
             delete_schedule = DeleteSchedule(self.read_timetable)
@@ -245,3 +245,6 @@ class EditableTimeWindow(TimeWindow):
                 mapped.close()
 
         self.map_timetable()
+
+    def load_timetable(self):
+        pass

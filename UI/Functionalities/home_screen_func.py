@@ -46,7 +46,7 @@ class Window(QMainWindow, Ui_MainWindow):
         self.gui_time = ReadOnlyTimeWindow(read_timetable, current_tz, target_tz)
 
         if not read_timetable:
-            warn_dialog = nav.WarnDialog()
+            warn_dialog = nav.WarnDialog(nav.LOAD_WARNING)
             warn_dialog.exec_()
         else:
             self.gui_time.setFixedSize(self.gui_time.size())
@@ -57,9 +57,8 @@ class Window(QMainWindow, Ui_MainWindow):
 
         :return: None
         """
-        read_timetable = clear_and_read()
 
-        self.gui_time = EditableTimeWindow(read_timetable)
+        self.gui_time = EditableTimeWindow()
         self.gui_time.setFixedSize(self.gui_time.size())
         nav.navigator.rotate(self, self.gui_time)
 
