@@ -2,21 +2,24 @@ import sys
 from typing import List
 
 from PyQt5.QtGui import QFont, QIntValidator
-from PyQt5.QtWidgets import QMainWindow, QLabel, QAction, QMenu, QDialog, QWidget
+from PyQt5.QtWidgets import QMainWindow, QLabel, QAction, QMenu, QDialog, QWidget, QCheckBox
 from PyQt5 import QtCore
 import datetime
 import UI.Functionalities.bridge as nav
 from UI.Layouts.timetable_screen import Ui_MainWindow
-from UI.Layouts.add_schedule_dialog import Ui_Dialog
+from UI.Layouts.add_schedule_dialog import Ui_Add_Dialog
+from UI.Layouts.delete_schedule_dialog import Ui_Delete_Dialog
 from Managers.TimeZoneManager import ALL_DAYS
 from Schedules import Schedules, ConflictingScheduleError, EndBeforeStartError
+
+DRAWN_LABELS = []
 
 
 def close_application():
     sys.exit()
 
 
-class AddSchedule(QDialog, Ui_Dialog):
+class AddSchedule(QDialog, Ui_Add_Dialog):
 
     def __init__(self, timetable: List[Schedules]):
         super().__init__()
@@ -32,7 +35,7 @@ class AddSchedule(QDialog, Ui_Dialog):
         self.buttonBox.accepted.connect(self.add_new)
         self.error_dialog.setStyleSheet('QLabel {color: #FF0000;}')
 
-    def add_new(self):
+    def add_new(self) -> None:
         try:
             start_time = datetime.time(int(self.start_hour.text()),
                                        int(self.start_min.text()))
@@ -70,6 +73,37 @@ class AddSchedule(QDialog, Ui_Dialog):
                                       'existing timetable.')
         except EndBeforeStartError:
             self.error_dialog.setText('ERROR: The end time cannot be before the start time.')
+
+
+class DeleteSchedule(QDialog, Ui_Delete_Dialog):
+
+    def __init__(self, timetable: List[Schedules]):
+        super().__init__()
+        self.setupUi(self)
+
+        self.timetable = timetable
+        self.delete_schedule = {}
+        self.generate_delete_options()
+        self.buttonBox.accepted.connect(self.delete_checked)
+
+    def generate_delete_options(self) -> None:
+
+        day_index = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+
+        for schedule in self.timetable:
+            check_text = schedule.name + ': ' + day_index[schedule.day] + ', '\
+                            + str(schedule.start_time)[:-3] + ' to '\
+                            + str(schedule.end_time)[:-3]
+
+            self.delete_schedule[schedule] = QCheckBox(check_text)
+            self.verticalLayout.addWidget(self.delete_schedule[schedule])
+
+    def delete_checked(self) -> None:
+        for schedule in self.delete_schedule:
+            if self.delete_schedule[schedule].isChecked():
+                self.timetable.remove(schedule)
+
+        self.close()
 
 
 def create_menu_button(menu_button_msg: str, menu_bar: QWidget) -> QMenu:
@@ -136,8 +170,12 @@ class TimeWindow(QMainWindow, Ui_MainWindow):
         graphed_schedule.move((802 / 8) * (schedule.day + 1), 48 + (625 / 25) * start_loc)
         graphed_schedule.show()
 
-    def create_menu_functionality(self, action_msg: str, short_cut: str, function_connect) -> QAction:
-        """Assigns a function to a new QAction with a name provided by action_msg and corresponding shortcut
+        DRAWN_LABELS.append(graphed_schedule)
+
+    def create_menu_functionality(self, action_msg: str, short_cut: str,
+                                  function_connect) -> QAction:
+        """Assigns a function to a new QAction with a name provided by action_msg
+        and corresponding shortcut
 
         :return: QAction required
         """
@@ -190,25 +228,20 @@ class EditableTimeWindow(TimeWindow):
 
         self.empty_layout()
 
-    def map_timetable(self) -> None:
-        """maps as parent function does, but displays error dialog if
-        there is no value in csv file.
-
-        :return: None
-        """
-        if not self.read_timetable:
-            warn_dialog = nav.WarnDialog()
-            warn_dialog.exec_()
-        else:
-            super(EditableTimeWindow, self).map_timetable()
-
     def add_new_schedule(self):
         add_schedule = AddSchedule(self.read_timetable)
         add_schedule.exec_()
         self.map_timetable()
 
-    def add_schedule_existing(self):
-        pass
-
     def remove_schedule(self):
-        pass
+        if not self.read_timetable:
+            warn_dialog = nav.WarnDialog()
+            warn_dialog.exec_()
+        else:
+            delete_schedule = DeleteSchedule(self.read_timetable)
+            delete_schedule.exec_()
+
+            for mapped in DRAWN_LABELS:
+                mapped.close()
+
+        self.map_timetable()
