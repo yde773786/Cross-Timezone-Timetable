@@ -1,5 +1,4 @@
 import sys
-from typing import List
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from UI.Layouts.home_screen import Ui_MainWindow
 import UI.Functionalities.bridge as nav
@@ -7,16 +6,6 @@ from UI.Functionalities.timetable_screen_func import ReadOnlyTimeWindow, Editabl
 from Schedules import Schedules
 from Managers.StorageManager import read_csv
 from Managers.TimeZoneManager import ALL_TIMEZONES
-
-
-def clear_and_read() -> List[object]:
-    """Every time a click event for either converting or creating is registered,
-        The previous list of schedules need to be removed and new ones to be read.
-
-    :return: list of new schedules
-    """
-    Schedules.clear_used()
-    return read_csv()
 
 
 class Window(QMainWindow, Ui_MainWindow):
@@ -39,7 +28,8 @@ class Window(QMainWindow, Ui_MainWindow):
 
         :return: None
         """
-        read_timetable = clear_and_read()
+        Schedules.clear_used()
+        read_timetable = read_csv()
 
         current_tz = str(self.current_tz_drop_down.currentText())
         target_tz = str(self.target_tz_drop_down.currentText())
@@ -57,7 +47,6 @@ class Window(QMainWindow, Ui_MainWindow):
 
         :return: None
         """
-
         self.gui_time = EditableTimeWindow()
         self.gui_time.setFixedSize(self.gui_time.size())
         nav.navigator.rotate(self, self.gui_time)

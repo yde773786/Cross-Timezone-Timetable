@@ -79,5 +79,5 @@ def read_csv() -> List[Schedules]:
         next(reader)
 
         timetable = [create_schedule(row) for row in reader if row != []]
-        Schedules.clear_used()
+
     return timetable

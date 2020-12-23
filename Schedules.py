@@ -80,6 +80,14 @@ class Schedules:
 
         return schedule_shift_list
 
+    def clear_slot(self) -> None:
+        """Clears calling schedule's slot to avoid ConflictingScheduleError
+        when resetting
+
+        :return: None"""
+        free_slot = (self.day, self.start_time, self.end_time)
+        self.__class__.used_slot.remove(free_slot)
+
     @classmethod
     def schedule_conflict(cls, day: int, start_time: datetime.time, end_time: datetime.time) -> bool:
         """Checks if there is a conflict with a previously entered Schedule

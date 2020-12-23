@@ -1,8 +1,5 @@
 import sys
-
-from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout
-
+from PyQt5.QtWidgets import QDialog
 from UI.Layouts.load_error import Ui_Dialog
 
 """

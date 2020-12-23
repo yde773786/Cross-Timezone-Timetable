@@ -10,9 +10,15 @@ from UI.Layouts.timetable_screen import Ui_MainWindow
 from UI.Layouts.add_schedule_dialog import Ui_Add_Dialog
 from UI.Layouts.delete_schedule_dialog import Ui_Delete_Dialog
 from Managers.TimeZoneManager import ALL_DAYS
+from Managers.StorageManager import read_csv
 from Schedules import Schedules, ConflictingScheduleError, EndBeforeStartError
 
 DRAWN_LABELS = []
+
+
+def clear_canvas():
+    for mapped in DRAWN_LABELS:
+        mapped.close()
 
 
 def close_application():
@@ -41,7 +47,7 @@ class AddSchedule(QDialog, Ui_Add_Dialog):
                                        int(self.start_min.text()))
 
             end_time = datetime.time(int(self.end_hour.text()),
-                                       int(self.end_min.text()))
+                                     int(self.end_min.text()))
 
             name = self.name_schedule.text()
             has_same_name = False
@@ -91,9 +97,9 @@ class DeleteSchedule(QDialog, Ui_Delete_Dialog):
         day_index = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
         for schedule in self.timetable:
-            check_text = schedule.name + ': ' + day_index[schedule.day] + ', '\
-                            + str(schedule.start_time)[:-3] + ' to '\
-                            + str(schedule.end_time)[:-3]
+            check_text = schedule.name + ': ' + day_index[schedule.day] + ', ' \
+                         + str(schedule.start_time)[:-3] + ' to ' \
+                         + str(schedule.end_time)[:-3]
 
             self.delete_schedule[schedule] = QCheckBox(check_text)
             self.verticalLayout.addWidget(self.delete_schedule[schedule])
@@ -102,6 +108,7 @@ class DeleteSchedule(QDialog, Ui_Delete_Dialog):
         for schedule in self.delete_schedule:
             if self.delete_schedule[schedule].isChecked():
                 self.timetable.remove(schedule)
+                Schedules.clear_slot(schedule)
 
         self.close()
 
@@ -143,7 +150,6 @@ class TimeWindow(QMainWindow, Ui_MainWindow):
 
         :return: None
         """
-        self.empty_layout()
 
         if self.read_timetable is not None:
             for schedule in self.read_timetable:
@@ -243,13 +249,29 @@ class EditableTimeWindow(TimeWindow):
         else:
             delete_schedule = DeleteSchedule(self.read_timetable)
             delete_schedule.exec_()
-
-            for mapped in DRAWN_LABELS:
-                mapped.close()
-
-        self.map_timetable()
+            clear_canvas()
+            self.map_timetable()
 
     def load_timetable(self):
-        warn_dialog = nav.WarnDialog(nav.DATA_LOSS_WARNING, add_choice_buttons=True)
-        print(warn_dialog.exec_())
+        prev_slots = Schedules.used_slot
+        Schedules.clear_used()
+        csv_timetable = read_csv()
+
+        if csv_timetable:
+            if self.read_timetable:
+                warn_dialog = nav.WarnDialog(nav.DATA_LOSS_WARNING, add_choice_buttons=True)
+                if warn_dialog.exec_():
+                    self.read_timetable = csv_timetable
+                    clear_canvas()
+                    self.map_timetable()
+                else:
+                    Schedules.used_slot = prev_slots
+            else:
+                self.read_timetable = csv_timetable
+                clear_canvas()
+                self.map_timetable()
+        else:
+            Schedules.used_slot = prev_slots
+            warn_dialog = nav.WarnDialog(nav.LOAD_WARNING)
+            warn_dialog.exec_()
 
