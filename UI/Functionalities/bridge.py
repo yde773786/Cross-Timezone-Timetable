@@ -11,7 +11,7 @@ This includes the navigator class to go back and forth windows, and the common L
 """
 
 LOAD_WARNING = "There is no timetable that you have stored.\n " \
-             "Please create one instead"
+               "Please create one instead"
 
 DELETE_WARNING = "There are no schedules to be deleted from timetable"
 
@@ -50,8 +50,19 @@ class WarnDialog(QDialog, Ui_Dialog):
 
     def __init__(self, message: str, add_choice_buttons=False):
         super().__init__()
+
         self.setupUi(self)
+        self.approved = False
         self.label_2.setText(message)
 
         if not add_choice_buttons:
             self.buttonBox.close()
+        self.buttonBox.accepted.connect(self.make_true)
+
+    def make_true(self):
+        self.approved = True
+        self.close()
+
+    def exec_(self) -> bool:
+        super(WarnDialog, self).exec_()
+        return self.approved

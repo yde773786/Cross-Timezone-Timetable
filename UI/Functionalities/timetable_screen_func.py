@@ -222,9 +222,12 @@ class EditableTimeWindow(TimeWindow):
 
         edit = create_menu_button('Edit Timetable', self.menubar)
 
-        edit.addAction(self.create_menu_functionality('Add Schedule', 'Ctrl+A', self.add_new_schedule))
-        edit.addAction(self.create_menu_functionality('Delete Schedule', 'Ctrl+D', self.remove_schedule))
-        edit.addAction(self.create_menu_functionality('Edit saved timetable', 'Ctrl+L', self.load_timetable))
+        edit.addAction(self.create_menu_functionality('Add Schedule', 'Ctrl+A',
+                                                      self.add_new_schedule))
+        edit.addAction(self.create_menu_functionality('Delete Schedule', 'Ctrl+D',
+                                                      self.remove_schedule))
+        edit.addAction(self.create_menu_functionality('Edit saved timetable', 'Ctrl+L',
+                                                      self.load_timetable))
 
         self.empty_layout()
 
@@ -247,4 +250,6 @@ class EditableTimeWindow(TimeWindow):
         self.map_timetable()
 
     def load_timetable(self):
-        pass
+        warn_dialog = nav.WarnDialog(nav.DATA_LOSS_WARNING, add_choice_buttons=True)
+        print(warn_dialog.exec_())
+
