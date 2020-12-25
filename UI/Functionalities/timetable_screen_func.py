@@ -231,6 +231,8 @@ class EditableTimeWindow(TimeWindow):
     def __init__(self):
         super(EditableTimeWindow, self).__init__([])
 
+        self.save_flag = True
+
         edit = create_menu_button('Edit Timetable', self.menubar)
         save = create_menu_button('Save Timetable', self.menubar)
 
@@ -244,8 +246,14 @@ class EditableTimeWindow(TimeWindow):
                                                       self.save_timetable))
 
     def add_new_schedule(self):
+        prev = self.read_timetable[:]
         add_schedule = AddSchedule(self.read_timetable)
         add_schedule.exec_()
+        after = self.read_timetable[:]
+
+        if prev != after:
+            self.save_flag = False
+
         self.map_timetable()
 
     def remove_schedule(self):
@@ -253,8 +261,14 @@ class EditableTimeWindow(TimeWindow):
             warn_dialog = nav.WarnDialog(nav.DELETE_WARNING)
             warn_dialog.exec_()
         else:
+            prev = self.read_timetable[:]
             delete_schedule = DeleteSchedule(self.read_timetable)
             delete_schedule.exec_()
+            after = self.read_timetable[:]
+
+            if prev != after:
+                self.save_flag = False
+
             clear_canvas()
             self.map_timetable()
 
@@ -284,4 +298,13 @@ class EditableTimeWindow(TimeWindow):
             warn_dialog.exec_()
 
     def save_timetable(self):
+        self.save_flag = True
         write_csv(self.read_timetable)
+
+    def home_application(self):
+        if not self.save_flag:
+            warn_dialog = nav.WarnDialog(nav.NOT_SAVED_WARNING, add_choice_buttons=True)
+            if warn_dialog.exec_():
+                super(EditableTimeWindow, self).home_application()
+        else:
+            super(EditableTimeWindow, self).home_application()

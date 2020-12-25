@@ -13,7 +13,10 @@ LOAD_WARNING = "There is no timetable that you have stored.\n " \
 DELETE_WARNING = "There are no schedules to be deleted from timetable"
 
 DATA_LOSS_WARNING = "The data on timetable being edited currently will be \n " \
-                    "lost. Do you wish to continue?"
+                    "overwritten. Do you wish to continue?"
+
+NOT_SAVED_WARNING = "Changes have been made to timetable that haven't been saved.\n "\
+                    "will be lost. Do you wish to continue?"
 
 
 class navigator:
