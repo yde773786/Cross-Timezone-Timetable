@@ -120,7 +120,7 @@ def create_menu_button(menu_button_msg: str, menu_bar: QWidget) -> QMenu:
 
     :return: new QMenu
     """
-    return menu_bar.addMenu('&' + menu_button_msg)
+    return menu_bar.addMenu(' &' + menu_button_msg)
 
 
 class TimeWindow(QMainWindow, Ui_MainWindow):
@@ -129,6 +129,9 @@ class TimeWindow(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.read_timetable = timetable
+
+        if sys.platform == 'darwin':
+            self.menubar.setNativeMenuBar(False)
 
         navigate = create_menu_button('Navigate', self.menubar)
         navigate.addAction(self.create_menu_functionality('Go Back', 'Ctrl+B',
