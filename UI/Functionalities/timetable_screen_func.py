@@ -6,11 +6,12 @@ from PyQt5.QtWidgets import QMainWindow, QLabel, QAction, QMenu, QDialog, QWidge
 from PyQt5 import QtCore
 import datetime
 import UI.Functionalities.bridge as nav
+from Managers.ColorManager import rotate_to_color
 from UI.Layouts.timetable_screen import Ui_MainWindow
 from UI.Layouts.add_schedule_dialog import Ui_Add_Dialog
 from UI.Layouts.delete_schedule_dialog import Ui_Delete_Dialog
 from Managers.TimeZoneManager import ALL_DAYS
-from Managers.StorageManager import read_csv
+from Managers.StorageManager import read_csv, write_csv
 from Schedules import Schedules, ConflictingScheduleError, EndBeforeStartError
 
 DRAWN_LABELS = []
@@ -133,6 +134,8 @@ class TimeWindow(QMainWindow, Ui_MainWindow):
         navigate.addAction(self.create_menu_functionality('Go Back', 'Ctrl+B',
                                                           self.home_application))
 
+        self.empty_layout()
+
     def empty_layout(self) -> None:
         """Create an empty timetable window
 
@@ -196,6 +199,8 @@ class TimeWindow(QMainWindow, Ui_MainWindow):
 
         :return: None
         """
+        DRAWN_LABELS.clear()
+        Schedules.clear_used()
         nav.navigator.rotate(self, nav.navigator.temporary_win)
 
 
@@ -227,6 +232,7 @@ class EditableTimeWindow(TimeWindow):
         super(EditableTimeWindow, self).__init__([])
 
         edit = create_menu_button('Edit Timetable', self.menubar)
+        save = create_menu_button('Save Timetable', self.menubar)
 
         edit.addAction(self.create_menu_functionality('Add Schedule', 'Ctrl+A',
                                                       self.add_new_schedule))
@@ -234,8 +240,8 @@ class EditableTimeWindow(TimeWindow):
                                                       self.remove_schedule))
         edit.addAction(self.create_menu_functionality('Edit saved timetable', 'Ctrl+L',
                                                       self.load_timetable))
-
-        self.empty_layout()
+        save.addAction(self.create_menu_functionality('Save Timetable', 'Ctrl+S',
+                                                      self.save_timetable))
 
     def add_new_schedule(self):
         add_schedule = AddSchedule(self.read_timetable)
@@ -264,14 +270,18 @@ class EditableTimeWindow(TimeWindow):
                     self.read_timetable = csv_timetable
                     clear_canvas()
                     self.map_timetable()
+                    rotate_to_color(self.read_timetable[-1].color)
                 else:
                     Schedules.used_slot = prev_slots
             else:
                 self.read_timetable = csv_timetable
                 clear_canvas()
                 self.map_timetable()
+                rotate_to_color(self.read_timetable[-1].color)
         else:
             Schedules.used_slot = prev_slots
             warn_dialog = nav.WarnDialog(nav.LOAD_WARNING)
             warn_dialog.exec_()
 
+    def save_timetable(self):
+        write_csv(self.read_timetable)

@@ -1,7 +1,7 @@
-from typing import Tuple, List
 import datetime
+from typing import List
+from Managers.ColorManager import get_next_color
 from Managers.TimeZoneManager import shifted_time
-from Managers.ColorManager import ALL_COLORS
 
 
 class ConflictingScheduleError(Exception):
@@ -21,7 +21,6 @@ class EndBeforeStartError(Exception):
 
 class Schedules:
     used_slot = []
-    color_queue = list(ALL_COLORS.values())
 
     def __init__(self, name: str, day: int, start_time: datetime.time,
                  end_time: datetime.time, is_shifted: bool,
@@ -50,7 +49,7 @@ class Schedules:
         if color is not None:
             self.color = color
         else:
-            self.color = Schedules.get_next_color()
+            self.color = get_next_color()
 
     def shift_schedules(self, current_tz: str, target_tz: str) -> List[object]:
         """Return a list of schedules at the target timezone that are equivalent to the input
@@ -114,14 +113,3 @@ class Schedules:
         :return: None
         """
         cls.used_slot = []
-
-    @classmethod
-    def get_next_color(cls) -> Tuple[int, int, int]:
-        """Provides new color for schedule by using a circular queue
-
-        :return: color for new schedule
-        """
-        schedule_color = cls.color_queue.pop(0)
-        cls.color_queue.append(schedule_color)
-
-        return schedule_color

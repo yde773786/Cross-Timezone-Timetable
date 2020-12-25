@@ -1,4 +1,4 @@
-"""Automatic binary encoding of the warning icon."""
+"""binary encoding of the warning icon."""
 
 from PyQt5 import QtCore
 
@@ -637,10 +637,13 @@ else:
     rcc_version = 2
     qt_resource_struct = qt_resource_struct_v2
 
-def qInitResources():
+
+def q_init_resources():
     QtCore.qRegisterResourceData(rcc_version, qt_resource_struct, qt_resource_name, qt_resource_data)
 
-def qCleanupResources():
+
+def q_cleanup_resources():
     QtCore.qUnregisterResourceData(rcc_version, qt_resource_struct, qt_resource_name, qt_resource_data)
 
-qInitResources()
+
+q_init_resources()

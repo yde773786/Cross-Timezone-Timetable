@@ -1,19 +1,33 @@
 from typing import Tuple
 
-ALL_COLORS = {'blue': (173, 216, 230),
-              'green': (144, 238, 144),
-              'brown': (195, 155, 119),
-              'pink': (255, 182, 193),
-              'yellow': (255, 255, 0),
-              'orange': (255, 207, 158),
-              'red': (202, 52, 51),
-              'violet': (177, 156, 217),
-              'gold': (212, 175, 55)}
+COLOR_QUEUE = [(173, 216, 230),
+               (144, 238, 144),
+               (195, 155, 119),
+               (255, 182, 193),
+               (255, 255, 0),
+               (255, 207, 158),
+               (202, 52, 51),
+               (177, 156, 217),
+               (212, 175, 55)]
 
 
-def generate_rgb(str_color: str) -> Tuple[int, int, int]:
-    """Generates the required rgb for the schedule's background
+def get_next_color() -> Tuple[int, int, int]:
+    """Provides new color by using a circular queue
 
-    :return: Tuple representing rgb of schedule's color
+    :return: color required
     """
-    return ALL_COLORS[str_color]
+    color_req = COLOR_QUEUE.pop(0)
+    COLOR_QUEUE.append(color_req)
+
+    return color_req
+
+
+def rotate_to_color(current: Tuple[int, int, int]) -> None:
+    """Rotates the color queue till the color immediately after
+    input is at start of queue.
+
+    :param current: current schedule's color
+    :return: None
+    """
+    while COLOR_QUEUE[-1] != current:
+        get_next_color()
