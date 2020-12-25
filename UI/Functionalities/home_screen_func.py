@@ -52,6 +52,11 @@ class Window(QMainWindow, Ui_MainWindow):
         nav.navigator.rotate(self, self.gui_time)
 
 
-app = QApplication(sys.argv)
-gui_home = Window()
-nav.start_application(app, gui_home)
+def run() -> None:
+    """Runs the application from home layout
+
+    :return: None
+    """
+    app = QApplication(sys.argv)
+    gui_home = Window()
+    nav.start_application(app, gui_home)
