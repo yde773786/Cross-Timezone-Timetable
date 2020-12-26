@@ -51,13 +51,13 @@ class WarnDialog(QDialog, Ui_Dialog):
     def __init__(self, message: str, add_choice_buttons=False):
         super().__init__()
 
-        self.setupUi(self)
+        self.setup_ui(self)
         self.approved = False
         self.label_2.setText(message)
 
         if not add_choice_buttons:
-            self.buttonBox.close()
-        self.buttonBox.accepted.connect(self.make_true)
+            self.button_box.close()
+        self.button_box.accepted.connect(self.make_true)
 
     def make_true(self):
         self.approved = True
