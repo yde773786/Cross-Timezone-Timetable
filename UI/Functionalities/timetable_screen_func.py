@@ -86,12 +86,12 @@ class DeleteSchedule(QDialog, Ui_Delete_Dialog):
 
     def __init__(self, timetable: List[Schedules]):
         super().__init__()
-        self.setupUi(self)
+        self.setup_ui(self)
 
         self.timetable = timetable
         self.delete_schedule = {}
         self.generate_delete_options()
-        self.buttonBox.accepted.connect(self.delete_checked)
+        self.button_box.accepted.connect(self.delete_checked)
 
     def generate_delete_options(self) -> None:
 
