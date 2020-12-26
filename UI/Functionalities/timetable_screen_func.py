@@ -129,9 +129,11 @@ class TimeWindow(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.read_timetable = timetable
+        self.statusbar.hide()
 
-        if sys.platform == 'darwin':
-            self.menubar.setNativeMenuBar(False)
+        self.day_height = self.label_18.frameGeometry().height()
+
+        self.menubar.setNativeMenuBar(False)
 
         navigate = create_menu_button('Navigate', self.menubar)
         navigate.addAction(self.create_menu_functionality('Go Back', 'Ctrl+B',
@@ -170,16 +172,21 @@ class TimeWindow(QMainWindow, Ui_MainWindow):
         graphed_schedule = QLabel(schedule.name + '\n'
                                   + str(schedule.start_time)[:5] + '-'
                                   + str(schedule.end_time)[:5], self)
-        graphed_schedule.setFont(QFont('Arial', 10))
+        graphed_schedule.setFont(QFont('Arial', 7))
         graphed_schedule.setAlignment(QtCore.Qt.AlignCenter)
         graphed_schedule.setStyleSheet('background-color: rgb{}'.format(str(schedule.color)))
-        duration = (schedule.end_time.hour * 60 + schedule.end_time.minute
-                    - schedule.start_time.hour * 60 - schedule.start_time.minute) / 60
-
-        graphed_schedule.resize(802 / 8, (625 / 25) * duration)
 
         start_loc = (schedule.start_time.hour * 60 + schedule.start_time.minute) / 60
-        graphed_schedule.move((802 / 8) * (schedule.day + 1), 48 + (625 / 25) * start_loc)
+        end_loc = (schedule.end_time.hour * 60 + schedule.end_time.minute) / 60
+
+        duration = (end_loc - start_loc)
+        upper_border = self.day_height + self.menubar.frameGeometry().height() - 3
+        unit_size = (self.TOTAL_HEIGHT - upper_border) / 24
+
+        graphed_schedule.resize(self.TOTAL_WIDTH / 8, unit_size * duration)
+
+        graphed_schedule.move((self.TOTAL_WIDTH / 8) * (schedule.day + 1), upper_border + unit_size
+                              * start_loc)
         graphed_schedule.show()
 
         DRAWN_LABELS.append(graphed_schedule)
@@ -235,7 +242,7 @@ class EditableTimeWindow(TimeWindow):
         super(EditableTimeWindow, self).__init__([])
 
         self.save_flag = True
-
+        # breakpoint()
         edit = create_menu_button('Edit Timetable', self.menubar)
         save = create_menu_button('Save Timetable', self.menubar)
 
