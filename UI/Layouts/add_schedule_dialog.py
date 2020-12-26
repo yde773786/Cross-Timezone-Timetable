@@ -1,79 +1,78 @@
-"""Designer ui file compiled into python code for adding a schedule"""
-
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtWidgets
+from UI.Layouts.base_designer import add_hard_code_loc_widget
 
 
 class Ui_Add_Dialog(object):
-    def setupUi(self, Dialog):
-        Dialog.setObjectName("Dialog")
-        Dialog.resize(596, 324)
-        self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
-        self.buttonBox.setGeometry(QtCore.QRect(230, 230, 171, 32))
-        self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
-        self.buttonBox.setObjectName("buttonBox")
-        self.label = QtWidgets.QLabel(Dialog)
-        self.label.setGeometry(QtCore.QRect(250, 20, 111, 20))
-        self.label.setObjectName("label")
-        self.label_2 = QtWidgets.QLabel(Dialog)
-        self.label_2.setGeometry(QtCore.QRect(130, 180, 101, 31))
-        self.label_2.setObjectName("label_2")
-        self.day_week = QtWidgets.QComboBox(Dialog)
-        self.day_week.setGeometry(QtCore.QRect(330, 180, 131, 26))
-        self.day_week.setObjectName("day_week")
-        self.label_3 = QtWidgets.QLabel(Dialog)
-        self.label_3.setGeometry(QtCore.QRect(130, 70, 141, 31))
-        self.label_3.setObjectName("label_3")
-        self.label_4 = QtWidgets.QLabel(Dialog)
-        self.label_4.setGeometry(QtCore.QRect(130, 130, 101, 31))
-        self.label_4.setObjectName("label_4")
-        self.name_schedule = QtWidgets.QLineEdit(Dialog)
-        self.name_schedule.setGeometry(QtCore.QRect(330, 70, 131, 26))
+
+    def __init__(self):
+        self.start_min = QtWidgets.QLineEdit()
+        self.error_dialog = QtWidgets.QLabel()
+        self.end_min = QtWidgets.QLineEdit()
+        self.end_hour = QtWidgets.QLineEdit()
+        self.start_hour = QtWidgets.QLineEdit()
+        self.name_schedule = QtWidgets.QLineEdit()
+        self.day_week = QtWidgets.QComboBox()
+        self.label_7 = QtWidgets.QLabel()
+        self.label_6 = QtWidgets.QLabel()
+        self.label_5 = QtWidgets.QLabel()
+        self.label_4 = QtWidgets.QLabel()
+        self.label_3 = QtWidgets.QLabel()
+        self.label_2 = QtWidgets.QLabel()
+        self.label = QtWidgets.QLabel()
+        self.button_box = QtWidgets.QDialogButtonBox()
+
+    def setup_ui(self, dialog) -> None:
+        dialog.setObjectName("dialog")
+        dialog.resize(596, 324)
+
+        self.button_box.setParent(dialog)
+        add_hard_code_loc_widget(self.button_box, dialog, (230, 230, 171, 32), 'button box')
+        self.button_box.setOrientation(QtCore.Qt.Horizontal)
+        self.button_box.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel |
+                                           QtWidgets.QDialogButtonBox.Ok)
+
+        add_hard_code_loc_widget(self.label, dialog, (250, 20, 111, 20), 'label')
+        add_hard_code_loc_widget(self.label_2, dialog, (130, 180, 101, 31), "label_2")
+        add_hard_code_loc_widget(self.label_3, dialog, (130, 70, 141, 31), "label_3")
+        add_hard_code_loc_widget(self.label_4, dialog, (130, 130, 101, 31), "label_4")
+        add_hard_code_loc_widget(self.label_5, dialog, (340, 130, 20, 21), "label_5")
+        add_hard_code_loc_widget(self.label_6, dialog, (390, 130, 20, 21), "label_6")
+        add_hard_code_loc_widget(self.label_7, dialog, (450, 130, 20, 21), "label_7")
+        add_hard_code_loc_widget(self.day_week, dialog, (330, 180, 131, 26), "day_week")
+        add_hard_code_loc_widget(self.name_schedule, dialog, (330, 70, 131, 26), "name_schedule")
+
         self.name_schedule.setAlignment(QtCore.Qt.AlignCenter)
-        self.name_schedule.setObjectName("name_schedule")
-        self.start_hour = QtWidgets.QLineEdit(Dialog)
-        self.start_hour.setGeometry(QtCore.QRect(300, 130, 31, 26))
+
+        add_hard_code_loc_widget(self.start_hour, dialog, (300, 130, 31, 26), 'start_hour')
         self.start_hour.setInputMethodHints(QtCore.Qt.ImhDigitsOnly)
         self.start_hour.setAlignment(QtCore.Qt.AlignCenter)
-        self.start_hour.setObjectName("start_hour")
-        self.label_5 = QtWidgets.QLabel(Dialog)
-        self.label_5.setGeometry(QtCore.QRect(340, 130, 20, 21))
-        self.label_5.setObjectName("label_5")
-        self.start_min = QtWidgets.QLineEdit(Dialog)
-        self.start_min.setGeometry(QtCore.QRect(350, 130, 31, 26))
+
+        add_hard_code_loc_widget(self.start_min, dialog, (350, 130, 31, 26), 'start_min')
         self.start_min.setAlignment(QtCore.Qt.AlignCenter)
-        self.start_min.setObjectName("start_min")
-        self.label_6 = QtWidgets.QLabel(Dialog)
-        self.label_6.setGeometry(QtCore.QRect(390, 130, 20, 21))
-        self.label_6.setObjectName("label_6")
-        self.end_hour = QtWidgets.QLineEdit(Dialog)
-        self.end_hour.setGeometry(QtCore.QRect(410, 130, 31, 26))
+
+        add_hard_code_loc_widget(self.end_hour, dialog, (410, 130, 31, 26), 'end hour')
         self.end_hour.setAlignment(QtCore.Qt.AlignCenter)
-        self.end_hour.setObjectName("end_hour")
-        self.label_7 = QtWidgets.QLabel(Dialog)
-        self.label_7.setGeometry(QtCore.QRect(450, 130, 20, 21))
-        self.label_7.setObjectName("label_7")
-        self.end_min = QtWidgets.QLineEdit(Dialog)
+
+        add_hard_code_loc_widget(self.end_min, dialog, (460, 130, 31, 26), 'end_min')
         self.end_min.setGeometry(QtCore.QRect(460, 130, 31, 26))
         self.end_min.setAlignment(QtCore.Qt.AlignCenter)
         self.end_min.setObjectName("end_min")
-        self.error_dialog = QtWidgets.QLabel(Dialog)
-        self.error_dialog.setGeometry(QtCore.QRect(20, 270, 561, 31))
+
+        add_hard_code_loc_widget(self.error_dialog, dialog, (20, 270, 561, 31), 'error_dialog')
         self.error_dialog.setText("")
         self.error_dialog.setAlignment(QtCore.Qt.AlignCenter)
-        self.error_dialog.setObjectName("error_dialog")
 
-        self.retranslateUi(Dialog)
-        self.buttonBox.rejected.connect(Dialog.reject)
-        QtCore.QMetaObject.connectSlotsByName(Dialog)
+        self.retranslate_ui(dialog)
+        self.button_box.rejected.connect(dialog.reject)
+        QtCore.QMetaObject.connectSlotsByName(dialog)
 
-    def retranslateUi(self, Dialog):
+    def retranslate_ui(self, dialog) -> None:
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
-        self.label.setText(_translate("Dialog", "Add Schedule"))
-        self.label_2.setText(_translate("Dialog", "Day of Week"))
-        self.label_3.setText(_translate("Dialog", "Name of Schedule:"))
-        self.label_4.setText(_translate("Dialog", "Timing:"))
-        self.label_5.setText(_translate("Dialog", ":"))
-        self.label_6.setText(_translate("Dialog", "to"))
-        self.label_7.setText(_translate("Dialog", ":"))
+        dialog.setWindowTitle(_translate("dialog", "dialog"))
+        self.label.setText(_translate("dialog", "Add Schedule"))
+        self.label_2.setText(_translate("dialog", "Day of Week"))
+        self.label_3.setText(_translate("dialog", "Name of Schedule:"))
+        self.label_4.setText(_translate("dialog", "Timing:"))
+        self.label_5.setText(_translate("dialog", ":"))
+        self.label_6.setText(_translate("dialog", "to"))
+        self.label_7.setText(_translate("dialog", ":"))

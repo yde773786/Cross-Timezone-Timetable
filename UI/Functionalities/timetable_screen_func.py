@@ -30,7 +30,7 @@ class AddSchedule(QDialog, Ui_Add_Dialog):
 
     def __init__(self, timetable: List[Schedules]):
         super().__init__()
-        self.setupUi(self)
+        self.setup_ui(self)
         self.int_input = QIntValidator()
 
         self.day_week.addItems(ALL_DAYS)
@@ -39,7 +39,7 @@ class AddSchedule(QDialog, Ui_Add_Dialog):
         self.end_hour.setValidator(self.int_input)
         self.end_min.setValidator(self.int_input)
         self.timetable = timetable
-        self.buttonBox.accepted.connect(self.add_new)
+        self.button_box.accepted.connect(self.add_new)
         self.error_dialog.setStyleSheet('QLabel {color: #FF0000;}')
 
     def add_new(self) -> None:
