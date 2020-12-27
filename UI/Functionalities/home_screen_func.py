@@ -13,7 +13,7 @@ class Window(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setupUi(self)
+        self.setup_ui(self)
         self.gui_time = None
 
         self.current_tz_drop_down.addItems(ALL_TIMEZONES)
