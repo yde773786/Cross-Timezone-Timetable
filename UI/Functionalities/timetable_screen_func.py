@@ -3,7 +3,7 @@ from typing import List
 
 from PyQt5.QtGui import QFont, QIntValidator
 from PyQt5.QtWidgets import QMainWindow, QLabel, QAction, QMenu, QDialog, QWidget, QCheckBox
-from PyQt5 import QtCore
+from PyQt5 import QtCore, QtGui
 import datetime
 import UI.Functionalities.bridge as nav
 from Managers.ColorManager import rotate_to_color
@@ -138,20 +138,6 @@ class TimeWindow(QMainWindow, Ui_MainWindow):
         navigate.addAction(self.create_menu_functionality('Go Back', 'Ctrl+B',
                                                           self.home_application))
 
-        self.empty_layout()
-
-    def empty_layout(self) -> None:
-        """Create an empty timetable window
-
-        :return: None
-        """
-        for x in range(24):
-            for y in range(7):
-                empty_label = QLabel('')
-                empty_label.setAlignment(QtCore.Qt.AlignCenter)
-                empty_label.setStyleSheet("border: 1px solid black;")
-                self.timetable_sandbox.addWidget(empty_label, x, y)
-
     def map_timetable(self) -> None:
         """Plots the Schedules appropriately on the TimeWindow
 
@@ -241,7 +227,7 @@ class EditableTimeWindow(TimeWindow):
         super(EditableTimeWindow, self).__init__([])
 
         self.save_flag = True
-        # breakpoint()
+
         edit = create_menu_button('Edit Timetable', self.menu_bar)
         save = create_menu_button('Save Timetable', self.menu_bar)
 
@@ -317,3 +303,11 @@ class EditableTimeWindow(TimeWindow):
                 super(EditableTimeWindow, self).home_application()
         else:
             super(EditableTimeWindow, self).home_application()
+
+    def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
+        if not self.save_flag:
+            warn_dialog = nav.WarnDialog(nav.NOT_SAVED_WARNING, add_choice_buttons=True)
+            if warn_dialog.exec_():
+                super(EditableTimeWindow, self).closeEvent(a0)
+        else:
+            super(EditableTimeWindow, self).closeEvent(a0)
