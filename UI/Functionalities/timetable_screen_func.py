@@ -127,15 +127,14 @@ class TimeWindow(QMainWindow, Ui_MainWindow):
 
     def __init__(self, timetable):
         super().__init__()
-        self.setupUi(self)
+        self.setup_ui(self)
         self.read_timetable = timetable
-        self.statusbar.hide()
 
         self.day_height = self.label_18.frameGeometry().height()
 
-        self.menubar.setNativeMenuBar(False)
+        self.menu_bar.setNativeMenuBar(False)
 
-        navigate = create_menu_button('Navigate', self.menubar)
+        navigate = create_menu_button('Navigate', self.menu_bar)
         navigate.addAction(self.create_menu_functionality('Go Back', 'Ctrl+B',
                                                           self.home_application))
 
@@ -180,7 +179,7 @@ class TimeWindow(QMainWindow, Ui_MainWindow):
         end_loc = (schedule.end_time.hour * 60 + schedule.end_time.minute) / 60
 
         duration = (end_loc - start_loc)
-        upper_border = self.day_height + self.menubar.frameGeometry().height() - 3
+        upper_border = self.day_height + self.menu_bar.frameGeometry().height() - 3
         unit_size = (self.TOTAL_HEIGHT - upper_border) / 24
 
         graphed_schedule.resize(self.TOTAL_WIDTH / 8, unit_size * duration)
@@ -243,8 +242,8 @@ class EditableTimeWindow(TimeWindow):
 
         self.save_flag = True
         # breakpoint()
-        edit = create_menu_button('Edit Timetable', self.menubar)
-        save = create_menu_button('Save Timetable', self.menubar)
+        edit = create_menu_button('Edit Timetable', self.menu_bar)
+        save = create_menu_button('Save Timetable', self.menu_bar)
 
         edit.addAction(self.create_menu_functionality('Add Schedule', 'Ctrl+A',
                                                       self.add_new_schedule))

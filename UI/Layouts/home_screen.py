@@ -128,8 +128,10 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.title.setText(_translate("MainWindow", "Cross Time-Zone Timetable"))
         self.load_label.setText(_translate("MainWindow", "Load Timetable"))
-        self.current_label.setText(_translate("MainWindow", "                    Current Time Zone:                    "))
-        self.target_label.setText(_translate("MainWindow", "                    Target Time Zone:                    "))
+        self.current_label.setText(_translate("MainWindow", "                    Current Time Zone:"
+                                                            "                    "))
+        self.target_label.setText(_translate("MainWindow", "                    Target Time Zone:"
+                                                           "                    "))
         self.convert.setText(_translate("MainWindow", "Convert"))
         self.create_label.setText(_translate("MainWindow", "Create Timetable:"))
         self.create.setText(_translate("MainWindow", "Create"))
