@@ -3,7 +3,7 @@ from typing import List
 
 from PyQt5.QtGui import QFont, QIntValidator
 from PyQt5.QtWidgets import QMainWindow, QLabel, QAction, QMenu, QDialog, QWidget, QCheckBox
-from PyQt5 import QtCore
+from PyQt5 import QtCore, QtGui
 import datetime
 import UI.Functionalities.bridge as nav
 from Managers.ColorManager import rotate_to_color
@@ -302,3 +302,13 @@ class EditableTimeWindow(TimeWindow):
                 super(EditableTimeWindow, self).home_application()
         else:
             super(EditableTimeWindow, self).home_application()
+
+    def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
+        if not self.save_flag:
+            warn_dialog = nav.WarnDialog(nav.NOT_SAVED_WARNING, add_choice_buttons=True)
+            if warn_dialog.exec_():
+                super(EditableTimeWindow, self).closeEvent(a0)
+            else:
+                a0.ignore()
+        else:
+            super(EditableTimeWindow, self).closeEvent(a0)

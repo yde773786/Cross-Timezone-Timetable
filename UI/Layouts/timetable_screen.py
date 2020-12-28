@@ -5,7 +5,7 @@ from Managers.TimeZoneManager import ALL_DAYS
 DAY_NAMES = [day[:3] for day in ALL_DAYS]
 TOTAL_HEIGHT = 683
 TOTAL_WIDTH = 1000
-MENU_HEIGHT = 23
+MENU_HEIGHT = 30
 MARGIN = 5
 
 
@@ -26,7 +26,7 @@ class Ui_MainWindow(object):
         main_window.setObjectName("MainWindow")
         main_window.resize(TOTAL_WIDTH, TOTAL_HEIGHT)
         self.menu_bar.setParent(main_window)
-
+        self.menu_bar.setFixedHeight(MENU_HEIGHT)
         self.central_widget.setObjectName("centralwidget")
         self.central_widget.setParent(main_window)
         self.timetable_canvas.setContentsMargins(MARGIN, MARGIN, MARGIN, MARGIN)
