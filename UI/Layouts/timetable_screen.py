@@ -3,6 +3,10 @@ from PyQt5.QtWidgets import QLabel
 from Managers.TimeZoneManager import ALL_DAYS
 
 DAY_NAMES = [day[:3] for day in ALL_DAYS]
+TOTAL_HEIGHT = 683
+TOTAL_WIDTH = 1000
+MENU_HEIGHT = 23
+MARGIN = 5
 
 
 class Ui_MainWindow(object):
@@ -16,17 +20,16 @@ class Ui_MainWindow(object):
         self.menu_bar = QtWidgets.QMenuBar()
         self.central_widget = QtWidgets.QWidget()
         self.timetable_canvas = QtWidgets.QGridLayout(self.central_widget)
-        self.TOTAL_HEIGHT = 675
-        self.TOTAL_WIDTH = 1000
+        self.temp = QLabel()
 
     def setup_ui(self, main_window):
         main_window.setObjectName("MainWindow")
-        main_window.resize(self.TOTAL_WIDTH, self.TOTAL_HEIGHT)
+        main_window.resize(TOTAL_WIDTH, TOTAL_HEIGHT)
         self.menu_bar.setParent(main_window)
 
         self.central_widget.setObjectName("centralwidget")
         self.central_widget.setParent(main_window)
-        self.timetable_canvas.setContentsMargins(5, 5, 5, 5)
+        self.timetable_canvas.setContentsMargins(MARGIN, MARGIN, MARGIN, MARGIN)
         self.timetable_canvas.setSpacing(0)
         self.timetable_canvas.setObjectName("gridLayout")
 
@@ -35,7 +38,6 @@ class Ui_MainWindow(object):
                 if x == 0 and y != 0:
                     empty_label = QLabel(DAY_NAMES[y - 1])
                     empty_label.setAlignment(QtCore.Qt.AlignCenter)
-                    empty_label.setStyleSheet("border: 1px solid black;")
 
                 elif y == 0 and x != 0:
                     time = str(x - 1) + ':' + '00'
@@ -54,7 +56,6 @@ class Ui_MainWindow(object):
                 self.timetable_canvas.addWidget(empty_label, x, y)
 
         main_window.setCentralWidget(self.central_widget)
-        self.menu_bar.setGeometry(QtCore.QRect(0, 0, 802, 23))
         self.menu_bar.setObjectName("menubar")
         main_window.setMenuBar(self.menu_bar)
 

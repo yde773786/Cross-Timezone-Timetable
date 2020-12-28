@@ -24,10 +24,10 @@ class Ui_MainWindow(object):
         self.create_label = QtWidgets.QLabel(self.central_widget)
         self.create = QtWidgets.QPushButton(self.central_widget)
 
-    def setup_ui(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(800, 600)
-        self.central_widget.setParent(MainWindow)
+    def setup_ui(self, main_window):
+        main_window.setObjectName("MainWindow")
+        main_window.resize(800, 600)
+        self.central_widget.setParent(main_window)
         self.central_widget.setObjectName("centralwidget")
         self.vertical_layout.setObjectName("verticalLayout")
         self.title_hz_layout.setObjectName("horizontalLayout_4")
@@ -117,15 +117,15 @@ class Ui_MainWindow(object):
         self.vertical_layout.addLayout(self.create_hz_layout)
         spacerItem16 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.vertical_layout.addItem(spacerItem16)
-        MainWindow.setCentralWidget(self.central_widget)
+        main_window.setCentralWidget(self.central_widget)
 
-        self.retranslate_ui(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.retranslate_ui(main_window)
+        QtCore.QMetaObject.connectSlotsByName(main_window)
         self.central_widget.setLayout(self.vertical_layout)
 
-    def retranslate_ui(self, MainWindow):
+    def retranslate_ui(self, main_window):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        main_window.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.title.setText(_translate("MainWindow", "Cross Time-Zone Timetable"))
         self.load_label.setText(_translate("MainWindow", "Load Timetable"))
         self.current_label.setText(_translate("MainWindow", "                    Current Time Zone:"

@@ -3,11 +3,11 @@ from typing import List
 
 from PyQt5.QtGui import QFont, QIntValidator
 from PyQt5.QtWidgets import QMainWindow, QLabel, QAction, QMenu, QDialog, QWidget, QCheckBox
-from PyQt5 import QtCore, QtGui
+from PyQt5 import QtCore
 import datetime
 import UI.Functionalities.bridge as nav
 from Managers.ColorManager import rotate_to_color
-from UI.Layouts.timetable_screen import Ui_MainWindow
+from UI.Layouts.timetable_screen import Ui_MainWindow, MARGIN, TOTAL_HEIGHT, TOTAL_WIDTH, MENU_HEIGHT
 from UI.Layouts.add_schedule_dialog import Ui_Add_Dialog
 from UI.Layouts.delete_schedule_dialog import Ui_Delete_Dialog
 from Managers.TimeZoneManager import ALL_DAYS
@@ -130,8 +130,6 @@ class TimeWindow(QMainWindow, Ui_MainWindow):
         self.setup_ui(self)
         self.read_timetable = timetable
 
-        self.day_height = self.label_18.frameGeometry().height()
-
         self.menu_bar.setNativeMenuBar(False)
 
         navigate = create_menu_button('Navigate', self.menu_bar)
@@ -161,19 +159,20 @@ class TimeWindow(QMainWindow, Ui_MainWindow):
         graphed_schedule.setAlignment(QtCore.Qt.AlignCenter)
         graphed_schedule.setStyleSheet('background-color: rgb{}'.format(str(schedule.color)))
 
-        start_loc = (schedule.start_time.hour * 60 + schedule.start_time.minute) / 60
-        end_loc = (schedule.end_time.hour * 60 + schedule.end_time.minute) / 60
+        start_loc = (schedule.start_time.hour * 60 + schedule.start_time.minute) / 60 + 1
+        end_loc = (schedule.end_time.hour * 60 + schedule.end_time.minute) / 60 + 1
 
-        duration = (end_loc - start_loc)
-        upper_border = self.day_height + self.menu_bar.frameGeometry().height() - 3
-        unit_size = (self.TOTAL_HEIGHT - upper_border) / 24
+        duration = end_loc - start_loc
+        upper_border = MENU_HEIGHT + MARGIN
 
-        graphed_schedule.resize(self.TOTAL_WIDTH / 8, unit_size * duration)
+        unit_height = (TOTAL_HEIGHT - 2 * MARGIN - MENU_HEIGHT) / 25
+        unit_width = (TOTAL_WIDTH - 2 * MARGIN) / 8
+        graphed_schedule.resize(unit_width, unit_height * duration)
 
-        graphed_schedule.move((self.TOTAL_WIDTH / 8) * (schedule.day + 1), upper_border + unit_size
-                              * start_loc)
+        graphed_schedule.move(unit_width * (schedule.day + 1) + MARGIN, upper_border +
+                              unit_height * start_loc)
+
         graphed_schedule.show()
-
         DRAWN_LABELS.append(graphed_schedule)
 
     def create_menu_functionality(self, action_msg: str, short_cut: str,
@@ -303,11 +302,3 @@ class EditableTimeWindow(TimeWindow):
                 super(EditableTimeWindow, self).home_application()
         else:
             super(EditableTimeWindow, self).home_application()
-
-    def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
-        if not self.save_flag:
-            warn_dialog = nav.WarnDialog(nav.NOT_SAVED_WARNING, add_choice_buttons=True)
-            if warn_dialog.exec_():
-                super(EditableTimeWindow, self).closeEvent(a0)
-        else:
-            super(EditableTimeWindow, self).closeEvent(a0)
