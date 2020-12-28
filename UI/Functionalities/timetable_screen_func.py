@@ -134,7 +134,9 @@ class TimeWindow(QMainWindow, Ui_MainWindow):
 
         navigate = create_menu_button('Navigate', self.menu_bar)
         navigate.addAction(self.create_menu_functionality('Go Back', 'Ctrl+B',
-                                                          self.home_application))
+                                                               self.home_application))
+        navigate.addAction(self.create_menu_functionality('Close Application', 'Ctrl+W',
+                                                          self.close))
 
     def map_timetable(self) -> None:
         """Plots the Schedules appropriately on the TimeWindow
