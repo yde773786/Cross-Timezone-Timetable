@@ -73,7 +73,7 @@ class Ui_MainWindow(object):
 
     def retranslate_ui(self, main_window):
         _translate = QtCore.QCoreApplication.translate
-        main_window.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        main_window.setWindowTitle(_translate("MainWindow", "Time-table"))
         self.action_add_schedule.setText(_translate("MainWindow", "Add Schedule"))
         self.action_delete_schedule.setText(_translate("MainWindow", "Delete Schedule"))
         self.action_save_and_return.setText(_translate("MainWindow", "Save and Continue"))

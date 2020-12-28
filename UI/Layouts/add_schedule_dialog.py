@@ -68,7 +68,7 @@ class Ui_Add_Dialog(object):
 
     def retranslate_ui(self, dialog) -> None:
         _translate = QtCore.QCoreApplication.translate
-        dialog.setWindowTitle(_translate("dialog", "dialog"))
+        dialog.setWindowTitle(_translate("dialog", "Add Schedule"))
         self.label.setText(_translate("dialog", "Add Schedule"))
         self.label_2.setText(_translate("dialog", "Day of Week"))
         self.label_3.setText(_translate("dialog", "Name of Schedule:"))

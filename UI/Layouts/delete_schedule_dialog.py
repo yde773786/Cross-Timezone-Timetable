@@ -5,7 +5,7 @@ from UI.Layouts.base_designer import add_hard_code_loc_widget
 
 def retranslate_ui(dialog):
     _translate = QtCore.QCoreApplication.translate
-    dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+    dialog.setWindowTitle(_translate("Dialog", "Delete Schedule"))
 
 
 class Ui_Delete_Dialog(object):

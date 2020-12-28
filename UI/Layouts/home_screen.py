@@ -125,7 +125,7 @@ class Ui_MainWindow(object):
 
     def retranslate_ui(self, main_window):
         _translate = QtCore.QCoreApplication.translate
-        main_window.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        main_window.setWindowTitle(_translate("MainWindow", "Home Window"))
         self.title.setText(_translate("MainWindow", "Cross Time-Zone Timetable"))
         self.load_label.setText(_translate("MainWindow", "Load Timetable"))
         self.current_label.setText(_translate("MainWindow", "                    Current Time Zone:"
