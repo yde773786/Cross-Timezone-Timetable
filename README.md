@@ -20,7 +20,8 @@ There are multiple shortcuts and menu buttons which can be utilized
 to add, delete, load stored timetable and so on.
 
 The current time zone refers to the timezone in which
-the original timetable is planned.
+the original timetable is planned. The user edits and stores
+this version of the timetable.
 
 The target time zone refers to the timezone to which the user
 intends to shift the timetable to.
