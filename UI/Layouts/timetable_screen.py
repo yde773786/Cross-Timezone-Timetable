@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QLabel
 from Managers.TimeZoneManager import ALL_DAYS
 
 DAY_NAMES = [day[:3] for day in ALL_DAYS]
-TOTAL_HEIGHT = 683
+TOTAL_HEIGHT = 690
 TOTAL_WIDTH = 1000
 MENU_HEIGHT = 30
 MARGIN = 5

@@ -15,6 +15,7 @@ class Window(QMainWindow, Ui_MainWindow):
 
         self.setup_ui(self)
         self.gui_time = None
+        nav.center_window(self)
 
         self.current_tz_drop_down.addItems(ALL_TIMEZONES)
         self.target_tz_drop_down.addItems(ALL_TIMEZONES)

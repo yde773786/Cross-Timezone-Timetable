@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QDialog, QMainWindow, QDesktopWidget
 from UI.Layouts.load_error import Ui_Dialog
 
 """
@@ -44,6 +44,13 @@ def start_application(application_starter: object, start_win: object) -> None:
     """
     start_win.show()
     sys.exit(application_starter.exec_())
+
+
+def center_window(window: QMainWindow):
+    center = QDesktopWidget().availableGeometry().center()
+    frame = window.frameGeometry()
+    frame.moveCenter(center)
+    window.move(frame.topLeft())
 
 
 class WarnDialog(QDialog, Ui_Dialog):

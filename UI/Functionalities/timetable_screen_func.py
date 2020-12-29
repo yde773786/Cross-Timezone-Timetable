@@ -129,7 +129,7 @@ class TimeWindow(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setup_ui(self)
         self.read_timetable = timetable
-
+        nav.center_window(self)
         self.menu_bar.setNativeMenuBar(False)
 
         navigate = create_menu_button('Navigate', self.menu_bar)
