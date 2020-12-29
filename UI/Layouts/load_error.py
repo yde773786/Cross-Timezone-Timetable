@@ -1,3 +1,7 @@
+"""
+Base layout script for all types of warnings.
+"""
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 import UI.Layouts.Image_assets.resources
 from UI.Layouts.base_designer import add_widget_to_layout

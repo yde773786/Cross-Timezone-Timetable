@@ -1,3 +1,7 @@
+"""
+All Timetable related windows' functionality.
+"""
+
 import sys
 from typing import List
 
@@ -17,12 +21,20 @@ from Schedules import Schedules, ConflictingScheduleError, EndBeforeStartError
 DRAWN_LABELS = []
 
 
-def clear_canvas():
+def clear_canvas() -> None:
+    """Removes all drawn schedules on the TimeTable Window
+
+    :return: None
+    """
     for mapped in DRAWN_LABELS:
         mapped.close()
 
 
-def close_application():
+def close_application() -> None:
+    """Closes Application
+
+    :return: None
+    """
     sys.exit()
 
 
@@ -43,6 +55,11 @@ class AddSchedule(QDialog, Ui_Add_Dialog):
         self.error_dialog.setStyleSheet('QLabel {color: #FF0000;}')
 
     def add_new(self) -> None:
+        """Functionality to add a new schedule to the timetable
+        using QDialog
+
+        :return: None
+        """
         try:
             start_time = datetime.time(int(self.start_hour.text()),
                                        int(self.start_min.text()))
@@ -94,6 +111,12 @@ class DeleteSchedule(QDialog, Ui_Delete_Dialog):
         self.button_box.accepted.connect(self.delete_checked)
 
     def generate_delete_options(self) -> None:
+        """lists out all schedules currently drawn on timetable
+        and provides a checkbox corresponding to each for possible
+        deletion.
+
+        :return: None
+        """
 
         day_index = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
@@ -106,6 +129,11 @@ class DeleteSchedule(QDialog, Ui_Delete_Dialog):
             self.verticalLayout.addWidget(self.delete_schedule[schedule])
 
     def delete_checked(self) -> None:
+        """Checks if the checkbox to the corresponding schedule
+        is ticked.
+
+        :return: None
+        """
         for schedule in self.delete_schedule:
             if self.delete_schedule[schedule].isChecked():
                 self.timetable.remove(schedule)
@@ -191,7 +219,7 @@ class TimeWindow(QMainWindow, Ui_MainWindow):
         return functionality
 
     def home_application(self):
-        """Navigate to home
+        """Clear all drawn labels and navigate to home
 
         :return: None
         """
@@ -241,7 +269,11 @@ class EditableTimeWindow(TimeWindow):
         save.addAction(self.create_menu_functionality('Save Timetable', 'Ctrl+S',
                                                       self.save_timetable))
 
-    def add_new_schedule(self):
+    def add_new_schedule(self) -> None:
+        """Displays add schedule dialog
+
+        :return: None
+        """
         prev = self.read_timetable[:]
         add_schedule = AddSchedule(self.read_timetable)
         add_schedule.exec_()
@@ -252,7 +284,12 @@ class EditableTimeWindow(TimeWindow):
 
         self.map_timetable()
 
-    def remove_schedule(self):
+    def remove_schedule(self) -> None:
+        """Displays the delete schedule dialog
+        (if there are any schedules mapped)
+
+        :return: None
+        """
         if not self.read_timetable:
             warn_dialog = nav.WarnDialog(nav.DELETE_WARNING)
             warn_dialog.exec_()
@@ -268,7 +305,12 @@ class EditableTimeWindow(TimeWindow):
             clear_canvas()
             self.map_timetable()
 
-    def load_timetable(self):
+    def load_timetable(self) -> None:
+        """Provides the Load stored timetable functionality
+        that draws stored timetable from csv file (If present)
+
+        :return: None
+        """
         prev_slots = Schedules.used_slot
         Schedules.clear_used()
         csv_timetable = read_csv()
@@ -293,11 +335,20 @@ class EditableTimeWindow(TimeWindow):
             warn_dialog = nav.WarnDialog(nav.LOAD_WARNING)
             warn_dialog.exec_()
 
-    def save_timetable(self):
+    def save_timetable(self) -> None:
+        """Provide save timetable functionality by writing
+        into csv file.
+
+        :return: None
+        """
         self.save_flag = True
         write_csv(self.read_timetable)
 
-    def home_application(self):
+    def home_application(self) -> None:
+        """Warn to save if not done already and navigate to home
+
+        :return: None
+        """
         if not self.save_flag:
             warn_dialog = nav.WarnDialog(nav.NOT_SAVED_WARNING, add_choice_buttons=True)
             if warn_dialog.exec_():
@@ -306,6 +357,11 @@ class EditableTimeWindow(TimeWindow):
             super(EditableTimeWindow, self).home_application()
 
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
+        """Warn to save if not done already and quit
+
+        :param a0: Close event signal
+        :return: None
+        """
         if not self.save_flag:
             warn_dialog = nav.WarnDialog(nav.NOT_SAVED_WARNING, add_choice_buttons=True)
             if warn_dialog.exec_():

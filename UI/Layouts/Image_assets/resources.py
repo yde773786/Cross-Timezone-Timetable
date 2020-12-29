@@ -1,4 +1,6 @@
-"""binary encoding of the warning icon."""
+"""
+Auto-generated bitmap for Image assets.
+"""
 
 from PyQt5 import QtCore
 

@@ -1,3 +1,7 @@
+"""
+Common design features to layouts.
+"""
+
 from typing import Tuple
 
 from PyQt5 import QtCore

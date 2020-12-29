@@ -1,3 +1,7 @@
+"""
+Home screen layout construction.
+"""
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from UI.Layouts.base_designer import add_widget_to_layout

@@ -1,3 +1,7 @@
+"""
+Delete schedule dialog construction.
+"""
+
 from PyQt5 import QtCore, QtWidgets
 
 from UI.Layouts.base_designer import add_hard_code_loc_widget

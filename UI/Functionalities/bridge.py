@@ -1,11 +1,10 @@
+"""
+Common utilities to all windows.
+"""
+
 import sys
 from PyQt5.QtWidgets import QDialog, QMainWindow, QDesktopWidget
 from UI.Layouts.load_error import Ui_Dialog
-
-"""
-bridge.py is a script that contains all functionalities that are common to the home window and the time windows.
-This includes the navigator class to go back and forth windows, and the common Load error warning dialog.
-"""
 
 LOAD_WARNING = "There is no timetable that you have stored.\n " \
                "Please create one instead"
@@ -46,7 +45,12 @@ def start_application(application_starter: object, start_win: object) -> None:
     sys.exit(application_starter.exec_())
 
 
-def center_window(window: QMainWindow):
+def center_window(window: QMainWindow) -> None:
+    """Center the window
+
+    :param window: the window to be centered
+    :return: None
+    """
     center = QDesktopWidget().availableGeometry().center()
     frame = window.frameGeometry()
     frame.moveCenter(center)
@@ -66,10 +70,18 @@ class WarnDialog(QDialog, Ui_Dialog):
             self.button_box.close()
         self.button_box.accepted.connect(self.make_true)
 
-    def make_true(self):
+    def make_true(self) -> None:
+        """Register ok button click as True
+
+        :return: None
+        """
         self.approved = True
         self.close()
 
     def exec_(self) -> bool:
+        """Override exec_ to pass cancel/ok information
+
+        :return: Button press information. cancel -> False; ok -> True
+        """
         super(WarnDialog, self).exec_()
         return self.approved

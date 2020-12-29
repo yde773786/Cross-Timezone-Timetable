@@ -1,3 +1,7 @@
+"""
+Home window screen functionality.
+"""
+
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from UI.Layouts.home_screen import Ui_MainWindow
