@@ -14,7 +14,7 @@ from Managers.ColorManager import rotate_to_color
 from UI.Layouts.timetable_screen import Ui_MainWindow, MARGIN, TOTAL_HEIGHT, TOTAL_WIDTH, MENU_HEIGHT
 from UI.Layouts.add_schedule_dialog import Ui_Add_Dialog
 from UI.Layouts.delete_schedule_dialog import Ui_Delete_Dialog
-from Managers.TimeZoneManager import ALL_DAYS
+from Managers.TimeManager import ALL_DAYS
 from Managers.StorageManager import read_csv, write_csv
 from Schedules import Schedules, ConflictingScheduleError, EndBeforeStartError
 

@@ -1,7 +1,11 @@
+"""
+Schedule class and associated exceptions.
+"""
+
 import datetime
 from typing import List
 from Managers.ColorManager import get_next_color
-from Managers.TimeZoneManager import shifted_time
+from Managers.TimeManager import shifted_time
 
 
 class ConflictingScheduleError(Exception):

@@ -4,7 +4,7 @@ Empty timetable layout construction.
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QLabel
-from Managers.TimeZoneManager import ALL_DAYS
+from Managers.TimeManager import ALL_DAYS
 
 DAY_NAMES = [day[:3] for day in ALL_DAYS]
 TOTAL_HEIGHT = 690

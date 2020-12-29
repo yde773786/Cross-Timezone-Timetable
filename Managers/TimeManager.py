@@ -1,3 +1,7 @@
+"""
+Manages time related data.
+"""
+
 import datetime
 from typing import Tuple
 

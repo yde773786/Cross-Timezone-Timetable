@@ -1,3 +1,7 @@
+"""
+Manages reading and writing of timetable for Linux/MacOS/Windows.
+"""
+
 import sys
 import os
 from typing import List, Tuple

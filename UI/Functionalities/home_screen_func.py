@@ -9,7 +9,7 @@ import UI.Functionalities.bridge as nav
 from UI.Functionalities.timetable_screen_func import ReadOnlyTimeWindow, EditableTimeWindow
 from Schedules import Schedules
 from Managers.StorageManager import read_csv
-from Managers.TimeZoneManager import ALL_TIMEZONES
+from Managers.TimeManager import ALL_TIMEZONES
 
 
 class Window(QMainWindow, Ui_MainWindow):

@@ -1,3 +1,7 @@
+"""
+Manages the color queue used in providing schedule colors.
+"""
+
 from typing import Tuple
 
 COLOR_QUEUE = [(173, 216, 230),
