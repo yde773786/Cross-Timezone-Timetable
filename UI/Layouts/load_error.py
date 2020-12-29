@@ -24,7 +24,7 @@ class Ui_Dialog(object):
         self.horizontal_layout.setObjectName("horizontalLayout")
 
         add_widget_to_layout(self.label, self.horizontal_layout, 'label')
-        self.label.setPixmap(QtGui.QPixmap(":/res/warning.png"))
+        self.label.setPixmap(QtGui.QPixmap(":Image_assets/warning.png"))
         add_widget_to_layout(self.label_2, self.horizontal_layout, 'label_2')
         self.vertical_layout.addLayout(self.horizontal_layout)
 
