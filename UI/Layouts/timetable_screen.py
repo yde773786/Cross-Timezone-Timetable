@@ -4,6 +4,7 @@ Empty timetable layout construction.
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QLabel
+import UI.Layouts.Image_assets.resources
 from Managers.TimeManager import ALL_DAYS
 
 DAY_NAMES = [day[:3] for day in ALL_DAYS]
@@ -28,7 +29,9 @@ class Ui_MainWindow(object):
 
     def setup_ui(self, main_window):
         main_window.setObjectName("MainWindow")
+        main_window.setWindowIcon(QtGui.QIcon(':Image_assets/ctztt.png'))
         main_window.resize(TOTAL_WIDTH, TOTAL_HEIGHT)
+
         self.menu_bar.setParent(main_window)
         self.menu_bar.setFixedHeight(MENU_HEIGHT)
         self.central_widget.setObjectName("centralwidget")

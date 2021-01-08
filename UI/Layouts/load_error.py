@@ -18,6 +18,7 @@ class Ui_Dialog(object):
 
     def setup_ui(self, dialog):
         dialog.setObjectName("Dialog")
+        dialog.setWindowIcon(QtGui.QIcon(':Image_assets/ctztt.png'))
         dialog.resize(504, 163)
 
         self.vertical_layout.setObjectName('verticalLayout')

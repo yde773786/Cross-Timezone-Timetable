@@ -3,6 +3,7 @@ Home screen layout construction.
 """
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import UI.Layouts.Image_assets.resources
 
 from UI.Layouts.base_designer import add_widget_to_layout
 
@@ -30,6 +31,7 @@ class Ui_MainWindow(object):
 
     def setup_ui(self, main_window):
         main_window.setObjectName("MainWindow")
+        main_window.setWindowIcon(QtGui.QIcon(':Image_assets/ctztt.png'))
         main_window.resize(800, 600)
         self.central_widget.setParent(main_window)
         self.central_widget.setObjectName("centralwidget")
