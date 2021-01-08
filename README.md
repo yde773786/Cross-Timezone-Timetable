@@ -1,9 +1,18 @@
 # Cross-Timezone-Timetable
+![Icon](UI/Layouts/Image_assets/ctztt.png?raw=true "CTZTT")
 A Time-table cross platform application that allows user to convert timetable from any timezone to another with ease.
 
 ## Installation
 
 To run CTZTT, a deb package for debian based linux distributions, and a windows executable are available. 
+
+For the Debian based distributions, navigate to the
+deb package directory.
+
+    sudo dpkg -i ctztt.deb
+
+The Windows executable can be run directly.
+
 For other systems, or to prevent a download of desktop application, 
 the source code can be executed as described below. Python 3.8 + is required.
 
@@ -20,10 +29,10 @@ The original timetable needs to be created by the user by clicking on the
 create button on the home screen. The menu bar in the new editable
 Time-table window provides the following functionality:
 
-* Add Schedule (Ctrl+A)
-* Delete Schedule (Ctrl+D)
-* Edit Saved Time-table (Ctrl+L)
-* Save Time-table (Ctrl+S)
+* Add Schedule  (<kbd>Ctrl</kbd> + <kbd>A</kbd>)
+* Delete Schedule (<kbd>Ctrl</kbd> + <kbd>D</kbd>)
+* Edit Saved Time-table (<kbd>Ctrl</kbd> + <kbd>L</kbd>)
+* Save Time-table (<kbd>Ctrl</kbd> + <kbd>S</kbd>)
 
 ### Conversion
 Two drop down menus are provided, one representing the current time-zone
